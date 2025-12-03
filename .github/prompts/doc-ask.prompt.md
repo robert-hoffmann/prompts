@@ -24,23 +24,21 @@ Please document the file `${file}` following the conventions observed in the pro
   import io           # Input/output operations (for string buffers)
   import traceback    # For detailed error stack traces
   ```
+
 - For custom/project-specific imports, be especially detailed about their functionality:
   ```python
-  from tools.nexcap import NEXCAP   # NEXCAP API integration
-  from tools.google import GOOGLE   # Google Drive API integration
-  from tools.skywise import SKYWISE # Skywise platform integration
+  from utils.google import GOOGLE   # Google Drive API integration
+  from utils.skywise import SKYWISE # Skywise platform integration
   ```
+
 - Group imports logically and add section comments when appropriate:
   ```python
   # Standard library imports for various functionalities
   import logging
   import pandas as pd
-
-  # Custom tool imports - these are project-specific modules
-  from tools.nexcap import NEXCAP
-  from tools.google import GOOGLE
   ```
-  When importing multiple items from the same module, list them vertically for clarity:
+
+- When importing multiple items from the same module, list them vertically for clarity:
   ```python
   # Modern type hinting imports - minimal usage, prefer built-ins
   from typing import (
@@ -58,10 +56,10 @@ Please document the file `${file}` following the conventions observed in the pro
   ```
 
 **MANDATORY: Pylance Type Checking Compliance**
-- **CRITICAL REQUIREMENT**: ALL code must pass Pylance type checking in `standard` mode, with modern `python 3.10.7` syntax
+- **CRITICAL REQUIREMENT**: ALL code must pass Pylance type checking in `standard` mode, with modern `python 3.10.10` syntax
 - **NO EXCEPTIONS**: Every function, method, class, and variable must have complete, accurate type annotations
 - Always add: `from __future__ import annotations` at the top of the file to support forward references
-- Use modern `python 3.10.7` union syntax with pipe operator (`|`) instead of deprecated `Union`
+- Use modern `python 3.10.10` union syntax with pipe operator (`|`) instead of deprecated `Union`
 - Use modern `| None` syntax instead of `Optional`
 - Use built-in collection types (`list`, `dict`, `tuple`, `set`) instead of deprecated `typing` equivalents
 - **Class attributes** must be explicitly typed:
@@ -101,7 +99,8 @@ Please document the file `${file}` following the conventions observed in the pro
   from collections.abc import Iterator, Generator
 
   def read_lines(self, file_path: str) -> Iterator[str]:
-      # or for more complex generators:
+  
+  # or for more complex generators:
   def process_chunks(self, data: list[str]) -> Generator[dict[str, Any], None, None]:
   ```
 - When functions don't return a value, explicitly use `-> None`

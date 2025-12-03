@@ -1,4 +1,5 @@
 {
+    "python.analysis.aiHoverSummaries": true,
     "python.analysis.typeCheckingMode": "standard",
     "python.analysis.typeEvaluation.deprecateTypingAliases": true,
     "python.analysis.typeEvaluation.enableReachabilityAnalysis": true,
@@ -7,12 +8,16 @@
     "python.analysis.typeEvaluation.strictSetInference": true,
     "python.analysis.languageServerMode": "full",
     "python.analysis.autoFormatStrings": true,
-    "python.analysis.completeFunctionParens": true,
+    "python.analysis.completeFunctionParens": false,
     "python.analysis.displayEnglishDiagnostics": true,
     "python.analysis.generateWithTypeAnnotation": true,
     "python.analysis.includeAliasesFromUserFiles": true,
     "python.analysis.inlayHints.functionReturnTypes": true,
     "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.disableTaggedHints": false,
+    "python.analysis.inlayHints.callArgumentNames": "off",
+    "python.analysis.enablePytestSupport": false,
+    "python.analysis.enableTroubleshootMissingImports": true,
     "python.languageServer": "Pylance",
     "python.missingPackage.severity": "Information",
     "python.terminal.activateEnvInCurrentTerminal": true,
@@ -20,6 +25,8 @@
     "pythonIndent.trimLinesWithOnlyWhitespace": true,
     "python.experiments.optInto": [],
     "python.terminal.useEnvFile": true,
+    "python.terminal.focusAfterLaunch": true,
     "chat.useNestedAgentsMdFiles": true,
-    "chat.mcp.gallery.enabled": true
+    "chat.mcp.gallery.enabled": true,
+    "jupyter.notebookFileRoot": "${workspaceFolder}"
 }

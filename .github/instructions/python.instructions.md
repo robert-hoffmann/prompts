@@ -1,5 +1,5 @@
 ---
-applyTo: "*.py"
+applyTo: "*.py,*.ipynb"
 ---
 
 # You are a Python expert specializing in clean, performant, and idiomatic Python code.
@@ -39,82 +39,47 @@ applyTo: "*.py"
 
 Leverage Python's standard library first. Use third-party packages `sparingly and judiciously`.
 
-## Always Prefer Standard (and modern) Library
-- **CRITICAL**: Always use Python's standard library modules when available before considering third-party packages
-- Standard library modules are:
-  - More stable and well-maintained
-  - Already installed (no dependencies)
-  - Better documented and widely understood
-  - Performance-optimized and battle-tested
-
-## Third-Party Packages (Use Only When Necessary)
-These are the ONLY approved third-party packages (for now: ask/suggest) for this project:
-- `pydantic`      - Data validation and settings (when built-in dataclasses aren't sufficient)
-- `glom`          - Complex data transformation (when dict comprehensions become unwieldy)
-- `fastapi`       - Web framework (approved for API endpoints)
-- `asyncio`       - Asynchronous programming (only when async/await is needed)
-- `aiohttp`       - Async HTTP requests (only when async HTTP is needed)
-- `psutil`        - System/process monitoring (no standard library equivalent)
-- `croniter`      - Cron expression parsing (no standard library equivalent)
-- `python-dotenv` - Environment variable management (simple .env file loading)
-- `requests`      - HTTP requests (only when urllib is too low-level)
-
-## Decision Tree for Package Selection
-1. Can this be done with standard library? → Use standard library
-2. Is it in our approved third-party list? → Use that package
-3. Need something else? → Discuss with team first, prefer extending standard library solution
-
-
 # Coding Standards
 
-## File System Operations - Modern pathlib Required
-- **ALWAYS use `pathlib.Path`** for file and directory operations
-- **NEVER use `os.path.join`, `os.path.exists`, etc.** - use Path methods instead
-- Pathlib provides:
-  - Cross-platform compatibility (essential for Windows Server 2022)
-  - Object-oriented API with cleaner, more readable code
-  - Built-in methods for common operations
-
-```python
-# ❌ WRONG - Old os.path style
-import os
-file_path = os.path.join(base_dir, 'subfolder', 'file.txt')
-if os.path.exists(file_path):
-    with open(file_path, 'r') as f:
-        content = f.read()
-
-# ✅ CORRECT - Modern pathlib style
-from pathlib import Path
-file_path = Path(base_dir) / 'subfolder' / 'file.txt'
-if file_path.exists():
-    content = file_path.read_text()
-
-# ✅ Path objects work seamlessly with open()
-with open(file_path, 'r') as f:
-    content = f.read()
-
-# ✅ Common pathlib operations
-file_path.mkdir(parents=True, exist_ok=True)  # Create directories
-file_path.unlink()                            # Delete file
-file_path.stat().st_size                      # Get file size
-file_path.iterdir()                           # List directory contents
-file_path.glob('*.txt')                       # Pattern matching
-file_path.resolve()                           # Absolute path
-file_path.parent                              # Parent directory
-file_path.stem                                # Filename without extension
-file_path.suffix                              # File extension
-```
-
 ## Type Hinting Requirements - STRICT MODE COMPLIANCE
-- **CRITICAL REQUIREMENT**: ALL code must pass Pylance type checking in `standard` mode, with modern `python 3.10.7` syntax
+- **CRITICAL REQUIREMENT**: ALL code must pass Pylance type checking in `standard` mode, with modern `python 3.10.10` syntax
 - **MANDATORY**: Every function, method, class, and variable must have complete, accurate type annotations
 - Always add: `from __future__ import annotations` at the top of the file to support forward references
-- Use modern `python 3.10.7` union syntax with pipe operator (`|`) instead of deprecated `Union`
+- Use modern `python 3.10.10` union syntax with pipe operator (`|`) instead of deprecated `Union`
 - Use modern `| None` syntax instead of `Optional`
 - Use built-in collection types (`list`, `dict`, `tuple`, `set`) instead of deprecated `typing` equivalents
 - Class attributes and instance variables must be explicitly typed
 - Complex return types must use precise compound types with modern syntax
 - When functions don't return a value, explicitly use `-> None`
+
+## Modern Python Standards - MANDATORY
+- **Prefer `pathlib.Path`** over `os.path` for all file system operations
+- **Prefer `from dataclasses import dataclass, field`** over `TypedDict` or plain classes  with `__init__` methods, for data containers
+- **Prefer `Pydantic`** for data validation, settings management, and parsing external data
+- Use these modern approaches to write cleaner, more maintainable code:
+  ```python
+  from pathlib import Path
+  from dataclasses import dataclass
+  from pydantic import BaseModel, Field
+
+  # Good - Modern pathlib
+  config_file = Path('config') / 'settings.json'
+  if config_file.exists():
+      content = config_file.read_text()
+
+  # Good - Dataclass for simple data containers
+  @dataclass
+  class Point:
+      x: float
+      y: float
+      label: str = "origin"
+
+  # Good - Pydantic for validated models
+  class Config(BaseModel):
+      host: str
+      port: int = Field(gt=0, le=65535)
+      timeout: float = 30.0
+  ```
 
 ## Function Signature Formatting
 - Always use multiline format with 8-space indentation for parameters:
@@ -247,8 +212,8 @@ file_path.suffix                              # File extension
   import pandas as pd  # Data manipulation and analysis library
 
   # Custom tool imports - project-specific modules
-  from tools.nexcap import NEXCAP # NEXCAP API integration
-  from tools.google import GOOGLE # Google Drive API integration
+  from utils.nexcap import NEXCAP # NEXCAP API integration
+  from utils.google import GOOGLE # Google Drive API integration
 
   # Modern type hinting imports - minimal usage, prefer built-ins
   from typing import (
@@ -277,7 +242,6 @@ file_path.suffix                              # File extension
 - Remove any dead code, unused variables, or unnecessary comments
 - Optimize performance by using more efficient algorithms or data structures where applicable
 - Use logging extensively so we can easily identify errors
-
 
 ## Important PEP rules to follow:
 

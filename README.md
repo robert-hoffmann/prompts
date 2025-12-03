@@ -22,14 +22,17 @@ A curated collection of **GitHub Copilot prompt files** and **instruction files*
 ### 🎓 Instructions (Auto-Applied Rules)
 
 | File | Languages | Purpose |
-|------|-----------|---------|
-| `html.instructions.md` | `.html`, `.css`, `.vue` | Vue 3.5+ / TypeScript / Bootstrap 5.3+ standards |
-| `python.instructions.md` | `.py` | Modern Python 3.10+ with full type hints |
+|------|-----------|---------||
+| `html.instructions.md` | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
+| `js.instructions.md` | `.js`, `.jsx` | Modern JavaScript ES2020+ with comprehensive JSDoc |
+| `python.instructions.md` | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
+| `ts.instructions.md` | `.ts`, `.tsx` | TypeScript strict mode with full type annotations |
 
 ### 💬 Prompts (On-Demand Actions)
 
 | File | Mode | What It Does |
 |------|------|--------------|
+| `diagram-generate.prompt.md` | Ask | Generate comprehensive Mermaid diagrams with clickable elements |
 | `doc-ask.prompt.md` | Ask | Document Python files with extensive inline comments |
 | `doc-edit.prompt.md` | Edit | Same as above, but directly edits the file |
 | `explain-code.prompt.md` | Ask | Beginner-friendly code explanations with JS/C#/PHP comparisons |
@@ -50,25 +53,50 @@ def process_data(
 
 - **100% Pylance compliant** - No more squiggly lines!
 - **`pathlib` everywhere** - Modern file system operations
+- **Windows-first** - Optimized for Windows Server 2022
 - **Aligned properties** - Visual clarity at a glance
 - **Standard library first** - Minimal dependencies
 
+### For JavaScript/TypeScript Devs 💛
+
+```javascript
+/**
+ * Extracts station and substation information from an address string.
+ *
+ * @param {string} address - The full address string to parse
+ * @returns {{station: string, substation: string}} - Parsed components
+ */
+function parseAddress(address) {
+    // Implementation here
+}
+```
+
+- **ES2020+ features** - Optional chaining, nullish coalescing, destructuring
+- **Comprehensive JSDoc** - Full type safety without TypeScript
+- **TypeScript strict mode** - `strictNullChecks`, `noImplicitAny` enabled
+- **Async/await patterns** - Modern Promise-based programming
+
 ### For Web Devs 🌐
 
-```typescript
-// ✅ Aligned object properties
-const config = {
-    apiEndpoint     : '/api/v1/users',
-    timeout         : 5000,
-    retryAttempts   : 3,
-    enableLogging   : true
-};
+```css
+/* ✅ Modern CSS Nesting */
+.card {
+    padding: 1rem;
+
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        font-weight: bold;
+    }
+}
 ```
 
 - **Vue 3.5+ Composition API** with `<script setup>`
-- **Bootstrap 5.3+** - Forms, validation, components
-- **Modern CSS3** - Nesting, variables, container queries
-- **TypeScript** - Full type safety
+- **Bootstrap 5.3+** - Forms, validation, dark mode support
+- **Modern CSS3** - Native nesting, custom properties, container queries
+- **Semantic HTML5** - Accessibility (ARIA), modern APIs
 
 ---
 
@@ -88,8 +116,11 @@ your-project/
 │   ├── copilot-instructions.md   # Global instructions
 │   ├── instructions/              # Auto-applied rules
 │   │   ├── html.instructions.md
-│   │   └── python.instructions.md
+│   │   ├── js.instructions.md
+│   │   ├── python.instructions.md
+│   │   └── ts.instructions.md
 │   └── prompts/                   # On-demand prompts
+│       ├── diagram-generate.prompt.md
 │       ├── doc-ask.prompt.md
 │       ├── doc-edit.prompt.md
 │       └── explain-code.prompt.md
