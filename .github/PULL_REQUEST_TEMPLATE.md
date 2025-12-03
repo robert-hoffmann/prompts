@@ -6,7 +6,7 @@ Brief description of your changes.
 
 - [ ] Bug fix / typo correction
 - [ ] Improved wording / clarity
-- [ ] New instruction (explain the gap it fills)
+- [ ] New instructions (explain the gap it fills)
 - [ ] Consolidation / refactoring
 
 ## Checklist
