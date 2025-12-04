@@ -396,5 +396,6 @@ Documentation is no longer just a courtesy for future developers — it's a **fo
 
 ## See Also
 
-- [copilot-instructions.md](../.github/copilot-instructions.md) — Project-specific AI instructions
+- [Code Formatting & Alignment Guide](code-formatting-alignment-guide.md) — Visual formatting principles for readable code
+- [README.md](../README.md) — Project overview and quick start guide
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — Contribution guidelines

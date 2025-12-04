@@ -261,3 +261,11 @@ function processData(input) {
 Just as you wouldn't publish a book with inconsistent margins, random spacing, and misaligned text, you shouldn't commit code that lacks visual structure and alignment.
 
 **Format your code like you format your documents: with intention, consistency, and respect for the reader.**
+
+---
+
+## See Also
+
+- [Code Documentation Guide](code-documentation-guide.md) — Documentation best practices for humans and AI
+- [README.md](../README.md) — Project overview and quick start guide
+- [CONTRIBUTING.md](../CONTRIBUTING.md) — Contribution guidelines
