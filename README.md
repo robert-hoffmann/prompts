@@ -21,62 +21,97 @@ A curated collection of **GitHub Copilot prompt files** and **instruction files*
 
 ### 🎓 Instructions (Auto-Applied Rules)
 
-| File | Languages | Purpose |
-|------|-----------|---------||
-| `html.instructions.md` | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
-| `js.instructions.md` | `.js`, `.jsx` | Modern JavaScript ES2020+ with comprehensive JSDoc |
-| `python.instructions.md` | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
-| `ts.instructions.md` | `.ts`, `.tsx` | TypeScript strict mode with full type annotations |
+Instructions are automatically applied based on file type when you open matching files.
+
+| File | Applies To | Purpose |
+|------|------------|---------|
+| [`html.instructions.md`](.github/instructions/html.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
+| [`js.instructions.md`](.github/instructions/js.instructions.md) | `.js`, `.jsx` | Modern JavaScript ES2020+ with comprehensive JSDoc |
+| [`python.instructions.md`](.github/instructions/python.instructions.md) | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
+| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `.ts`, `.tsx` | TypeScript strict mode with full type annotations |
 
 ### 💬 Prompts (On-Demand Actions)
 
+Prompts are invoked manually via Copilot Chat using the `/` command or by selecting the prompt file.
+
 | File | Mode | What It Does |
 |------|------|--------------|
-| `diagram-generate.prompt.md` | Ask | Generate comprehensive Mermaid diagrams with clickable elements |
-| `doc-ask.prompt.md` | Ask | Document Python files with extensive inline comments |
-| `doc-edit.prompt.md` | Edit | Same as above, but directly edits the file |
-| `explain-code.prompt.md` | Ask | Beginner-friendly code explanations with JS/C#/PHP comparisons |
+| [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) | Ask | Generate Mermaid diagrams with clickable elements linking to source |
+| [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) | Ask | Document Python files with extensive inline comments (preview) |
+| [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) | Edit | Document Python files with inline editing (modifies file directly) |
+| [`explain-code.prompt.md`](.github/prompts/explain-code.prompt.md) | Ask | Beginner-friendly code explanations with JS/C#/PHP comparisons |
 
 ---
 
 ## 🔥 Key Features
 
+### Common Principles Across All Languages
+
+All instruction files share these core philosophies:
+
+- ✅ **KISS, DRY, YAGNI, Single Responsibility** - Clean code practices
+- ✅ **Standard library first** - Third-party packages used sparingly
+- ✅ **Composition over inheritance** - Flexible, maintainable code
+- ✅ **Comprehensive error handling** - Custom exceptions and error classes
+- ✅ **Aligned formatting** - Visual clarity with consistent spacing
+
+---
+
 ### For Python Devs 🐍
+
+**Target:** Windows Server 2022 | Python 3.10+
 
 ```python
 # ✅ Modern type hints with pipe syntax
 def process_data(
-    data   : list[str],
-    config : dict[str, Any] | None = None
-) -> tuple[bool, str]:
+        data   : list[str],
+        config : dict[str, Any] | None = None
+    ) -> tuple[bool, str]:
 ```
 
-- **100% Pylance compliant** - No more squiggly lines!
-- **`pathlib` everywhere** - Modern file system operations
-- **Windows-first** - Optimized for Windows Server 2022
-- **Aligned properties** - Visual clarity at a glance
-- **Standard library first** - Minimal dependencies
+| Feature | Description |
+|---------|-------------|
+| **100% Pylance compliant** | Standard mode type checking, zero warnings |
+| **Modern union syntax** | `str \| None` instead of `Optional[str]` |
+| **Built-in generics** | `list[str]` instead of `List[str]` |
+| **`pathlib` everywhere** | Modern file system operations |
+| **Aligned properties** | Visual clarity at a glance |
+| **Dataclasses & Pydantic** | Preferred over plain classes |
+
+**Key PEPs enforced:** 585 (built-in generics), 604 (union types), 563 (postponed annotations), 634-636 (pattern matching), 618 (`zip(strict=True)`)
+
+---
 
 ### For JavaScript/TypeScript Devs 💛
+
+**Target:** ES2020+ | TypeScript Strict Mode
 
 ```javascript
 /**
  * Extracts station and substation information from an address string.
  *
- * @param {string} address - The full address string to parse
- * @returns {{station: string, substation: string}} - Parsed components
+ * @param {string} address                                            - The full address string to parse
+ * @returns {{station: string, substation: string, location: string}} - Parsed components
+ * @throws {Error}                                                    - If the address format is invalid
  */
-function parseAddress(address) {
+function extractStationSubstation(address) {
     // Implementation here
 }
 ```
 
-- **ES2020+ features** - Optional chaining, nullish coalescing, destructuring
-- **Comprehensive JSDoc** - Full type safety without TypeScript
-- **TypeScript strict mode** - `strictNullChecks`, `noImplicitAny` enabled
-- **Async/await patterns** - Modern Promise-based programming
+| Feature | Description |
+|---------|-------------|
+| **Comprehensive JSDoc** | Full type safety without TypeScript |
+| **Strict TypeScript** | `strictNullChecks`, `noImplicitAny` enabled |
+| **Modern syntax** | Optional chaining, nullish coalescing, destructuring |
+| **`unknown` over `any`** | Safer type handling |
+| **Multiline formatting** | Clear parameter documentation |
+
+---
 
 ### For Web Devs 🌐
+
+**Target:** Vue 3.5+ | Bootstrap 5.3+ | CSS3
 
 ```css
 /* ✅ Modern CSS Nesting */
@@ -93,10 +128,43 @@ function parseAddress(address) {
 }
 ```
 
-- **Vue 3.5+ Composition API** with `<script setup>`
-- **Bootstrap 5.3+** - Forms, validation, dark mode support
-- **Modern CSS3** - Native nesting, custom properties, container queries
-- **Semantic HTML5** - Accessibility (ARIA), modern APIs
+| Feature | Description |
+|---------|-------------|
+| **Native CSS nesting** | Modern `&` syntax for pseudo-classes |
+| **CSS custom properties** | `var(--primary-color)` throughout |
+| **Vue Composition API** | `<script setup>` with reactive patterns |
+| **Section organization** | Clear `/* ========= */` dividers |
+| **Semantic HTML5** | ARIA attributes, modern APIs |
+
+---
+
+## 🛠️ Prompt Highlights
+
+### 📊 Diagram Generation
+
+The [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) creates comprehensive Mermaid diagrams:
+
+- **Auto-detects diagram type** - Flowchart, Class, Sequence, State, ER diagrams
+- **Clickable elements** - Links directly to source code lines in VS Code
+- **Dual-theme colors** - Works in both light and dark modes
+- **Proper syntax handling** - Escapes special characters, wraps labels correctly
+
+### 📖 Documentation Prompts
+
+Both [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) and [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) enforce:
+
+- **Code preservation** - Never removes existing functionality
+- **Section headers** - `# ========= STEP 1: Description =========`
+- **Import documentation** - Explains why each import exists
+- **Aligned formatting** - Colons and values lined up
+
+### 🎓 Code Explanation
+
+The [`explain-code.prompt.md`](.github/prompts/explain-code.prompt.md) provides:
+
+- **Multi-language comparisons** - JavaScript, C#, and PHP equivalents
+- **Beginner-friendly** - Simple analogies before technical terms
+- **Structured format** - 🔍 What, 🧱 How, 🔄 Similar to, ✅ Good, ⚠️ Watch out, 💡 Tips
 
 ---
 
@@ -113,7 +181,7 @@ git clone https://github.com/robert-hoffmann/prompts.git
 ```
 your-project/
 ├── .github/
-│   ├── copilot-instructions.md   # Global instructions
+│   ├── copilot-instructions.md    # Global instructions (optional)
 │   ├── instructions/              # Auto-applied rules
 │   │   ├── html.instructions.md
 │   │   ├── js.instructions.md
@@ -128,7 +196,8 @@ your-project/
 
 ### 3. Start coding! 🎉
 
-Instructions are automatically applied based on file type. Prompts can be invoked via Copilot Chat.
+- **Instructions** - Automatically applied when you open matching file types
+- **Prompts** - Invoke via Copilot Chat with `@workspace /prompt-name` or select from the prompt picker
 
 ---
 
@@ -138,17 +207,20 @@ Instructions are automatically applied based on file type. Prompts can be invoke
 
 These prompts enforce:
 
-- **Extensive inline comments** - Make code readable for newcomers
-- **Section headers** - Visual structure with `===` separators
-- **Import documentation** - Explain why each import exists
-- **Aligned formatting** - Properties lined up for easy scanning
-- **Preserved tags** - `TODO`, `FIXME`, `BUG`, `HACK` stay in place
+| Principle | Implementation |
+|-----------|----------------|
+| **Extensive inline comments** | Make code readable for newcomers |
+| **Section headers** | Visual structure with `===` separators |
+| **Import documentation** | Explain why each import exists |
+| **Aligned formatting** | Properties lined up for easy scanning |
+| **Preserved tags** | `TODO`, `FIXME`, `BUG`, `HACK` stay in place |
+| **Don't overengineer** | Simple, effective solutions |
 
 ---
 
 ## 📖 Example Output
 
-Before:
+**Before:**
 ```python
 def get_user(id, include_posts=None):
     result = db.query(User).filter(User.id == id).first()
@@ -157,12 +229,12 @@ def get_user(id, include_posts=None):
     return result
 ```
 
-After (with prompts applied):
+**After (with prompts applied):**
 ```python
 def get_user(
-    id            : int,
-    include_posts : bool | None = None
-) -> User | None:
+        id            : int,
+        include_posts : bool | None = None
+    ) -> User | None:
     """
     Retrieve a user by ID with optional post loading.
     
@@ -187,7 +259,7 @@ def get_user(
 
 ## 🎁 Bonus: VS Code Settings for Python Type Safety
 
-Want **maximum type safety**? Drop this in your `.vscode/settings.json`:
+Want **maximum type safety**? Add this to your `.vscode/settings.json`:
 
 ```jsonc
 {
@@ -197,18 +269,18 @@ Want **maximum type safety**? Drop this in your `.vscode/settings.json`:
     "python.analysis.typeCheckingMode"                           : "standard",
 
     // Modern Python - Ditch the Old Stuff 🚫
-    "python.analysis.typeEvaluation.deprecateTypingAliases"      : true,   // Use list, dict, not List, Dict
+    "python.analysis.typeEvaluation.deprecateTypingAliases"      : true,
 
     // Strict Inference - Catch More Bugs 🐛
     "python.analysis.typeEvaluation.strictDictionaryInference"   : true,
     "python.analysis.typeEvaluation.strictListInference"         : true,
     "python.analysis.typeEvaluation.strictSetInference"          : true,
-    "python.analysis.typeEvaluation.enableReachabilityAnalysis"  : true,   // Dead code detection
+    "python.analysis.typeEvaluation.enableReachabilityAnalysis"  : true,
 
     // Quality of Life ✨
-    "python.analysis.autoFormatStrings"                          : true,   // Auto f-string conversion
-    "python.analysis.completeFunctionParens"                     : true,   // Add () on completion
-    "python.analysis.generateWithTypeAnnotation"                 : true,   // Generate typed code
+    "python.analysis.autoFormatStrings"                          : true,
+    "python.analysis.completeFunctionParens"                     : true,
+    "python.analysis.generateWithTypeAnnotation"                 : true,
 
     // Inlay Hints - See Types Everywhere 👀
     "python.analysis.inlayHints.functionReturnTypes"             : true,
@@ -219,13 +291,13 @@ Want **maximum type safety**? Drop this in your `.vscode/settings.json`:
 }
 ```
 
-> 💡 **Pro tip:** These settings make Pylance enforce modern `list[str]` over deprecated `List[str]`, and catch unreachable code automatically!
-
 ---
 
 ## 🤝 Contributing
 
 Found something useful? Have improvements? PRs welcome!
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
