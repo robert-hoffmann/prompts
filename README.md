@@ -257,6 +257,19 @@ def get_user(
 
 ---
 
+## 📚 Documentation & Guides
+
+Want to dive deeper into the principles behind these prompts? Check out the [**Documentation Index**](./docs/index.md) for additional guides:
+
+| Guide | What You'll Learn |
+|-------|-------------------|
+| [**Code Documentation Guide**](./docs/code-documentation-guide.md) | The `AGENT_TODO` system for AI communication, comment tag standards (`BUG`, `HACK`, `FIXME`, etc.), and best practices for AI-friendly documentation |
+| [**Code Formatting & Alignment Guide**](./docs/code-formatting-alignment-guide.md) | Why visual alignment matters, variable declaration formatting, and how typography principles from books translate to cleaner code |
+
+These guides explain the *why* behind the formatting and documentation standards used throughout this collection.
+
+---
+
 ## 🎁 Bonus: VS Code Settings for Python Type Safety
 
 Want **maximum type safety**? Add this to your `.vscode/settings.json`:
