@@ -266,6 +266,7 @@ Just as you wouldn't publish a book with inconsistent margins, random spacing, a
 
 ## See Also
 
-- [Code Documentation Guide](code-documentation-guide.md) — Documentation best practices for humans and AI
-- [README.md](../README.md) — Project overview and quick start guide
+- [AI Context Window Management Guide](./ai-context-window-guide.md) — Managing tokens and context for effective AI assistance
+- [Code Documentation Guide](./code-documentation-guide.md) — Documentation best practices for humans and AI
+- [README.md](./README.md) — Documentation index
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — Contribution guidelines

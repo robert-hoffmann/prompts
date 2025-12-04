@@ -396,6 +396,7 @@ Documentation is no longer just a courtesy for future developers — it's a **fo
 
 ## See Also
 
-- [Code Formatting & Alignment Guide](code-formatting-alignment-guide.md) — Visual formatting principles for readable code
-- [README.md](../README.md) — Project overview and quick start guide
+- [AI Context Window Management Guide](./ai-context-window-guide.md) — Managing tokens and context for effective AI assistance
+- [Code Formatting & Alignment Guide](./code-formatting-alignment-guide.md) — Visual formatting principles for readable code
+- [README.md](./README.md) — Documentation index
 - [CONTRIBUTING.md](../CONTRIBUTING.md) — Contribution guidelines

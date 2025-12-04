@@ -6,6 +6,18 @@ This directory contains guides and best practices for writing clean, maintainabl
 
 ## Available Guides
 
+### [AI Context Window Management Guide](./ai-context-window-guide.md)
+
+A guide on understanding and managing AI context windows for more effective AI-assisted development.
+
+**Key Topics:**
+- **The Token Budget** — Why context size directly impacts AI reasoning quality
+- **Single-Focus Principle** — Working on one file, one class, one function, one task at a time
+- **Context Efficiency** — Avoiding bloated PRDs, excessive file attachments, and vague prompts
+- **Separation of Concerns** — How well-structured code enables better AI assistance
+
+---
+
 ### [Code Documentation Guide](./code-documentation-guide.md)
 
 A comprehensive guide on code documentation practices that benefit both human developers and AI coding assistants.
@@ -33,5 +45,6 @@ A guide on code formatting principles that improve readability and maintainabili
 
 | Guide | Focus | Audience |
 |-------|-------|----------|
+| [AI Context Window](./ai-context-window-guide.md) | Token management, focused prompts | All developers |
 | [Code Documentation](./code-documentation-guide.md) | Comments, tags, AI communication | All developers |
 | [Code Formatting](./code-formatting-alignment-guide.md) | Visual alignment, readability | All developers |

@@ -263,6 +263,7 @@ Want to dive deeper into the principles behind these prompts? Check out the [**D
 
 | Guide | What You'll Learn |
 |-------|-------------------|
+| [**AI Context Window Management Guide**](./docs/ai-context-window-guide.md) | Understanding token budgets, minimizing context bloat, the single-focus principle, and how to structure prompts for maximum AI effectiveness |
 | [**Code Documentation Guide**](./docs/code-documentation-guide.md) | The `AGENT_TODO` system for AI communication, comment tag standards (`BUG`, `HACK`, `FIXME`, etc.), and best practices for AI-friendly documentation |
 | [**Code Formatting & Alignment Guide**](./docs/code-formatting-alignment-guide.md) | Why visual alignment matters, variable declaration formatting, and how typography principles from books translate to cleaner code |
 
