@@ -259,7 +259,7 @@ def get_user(
 
 ## 📚 Documentation & Guides
 
-Want to dive deeper into the principles behind these prompts? Check out the [**Documentation Index**](./docs/index.md) for additional guides:
+Want to dive deeper into the principles behind these prompts? Check out the [**Documentation Index**](./docs/README.md) for additional guides:
 
 | Guide | What You'll Learn |
 |-------|-------------------|
