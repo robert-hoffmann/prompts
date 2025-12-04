@@ -43,8 +43,15 @@ from __future__ import annotations
 # For flexible return type annotation
 from typing import Any  
 
-import requests                                                   # HTTP library for API calls
-from tenacity import retry, stop_after_attempt, wait_exponential  # Retry logic with backoff
+# HTTP library for API calls
+import requests
+
+# Retry logic with backoff
+from tenacity import (
+    retry,              # Decorator for automatic retries
+    stop_after_attempt, # Stop after N attempts
+    wait_exponential    # Exponential backoff between retries
+)
 
 
 # AGENT_DONE: Added retry logic with exponential backoff (max 3 retries)
@@ -97,8 +104,17 @@ Class documentation provides the "big picture" context that helps AI understand 
 ```python
 from __future__ import annotations
 
-from dataclasses import dataclass, field  # For clean data container classes
-from typing      import Any, Protocol     # Any for flexible types, Protocol for structural subtyping
+# For clean data container classes
+from dataclasses import (
+    dataclass,  # Decorator for auto-generated methods
+    field       # Customize field behavior
+)
+
+# Type annotations
+from typing import (
+    Any,       # For flexible/dynamic types
+    Protocol   # For structural subtyping (duck typing)
+)
 
 # For audit logging and compliance tracking
 import logging
@@ -125,9 +141,9 @@ class PaymentProcessor:
     logged for audit purposes and PCI compliance.
 
     Attributes:
-        gateway:      The active payment gateway instance
-        max_retries:  Maximum retry attempts for failed transactions (default: 3)
-        audit_logger: Logger instance for compliance tracking
+        gateway      : The active payment gateway instance
+        max_retries  : Maximum retry attempts for failed transactions (default: 3)
+        audit_logger : Logger instance for compliance tracking
 
     Example:
         processor = PaymentProcessor(gateway=StripeGateway())
