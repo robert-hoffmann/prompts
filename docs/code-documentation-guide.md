@@ -280,8 +280,8 @@ def process_order(
         order: The order to process
 
     Raises:
-        OutOfStockError: When items are not available
-        PaymentError:    When payment fails (inventory is rolled back)
+        OutOfStockError : When items are not available
+        PaymentError    : When payment fails (inventory is rolled back)
     """
     # IMPORTANT: Lock must be acquired before inventory check to prevent
     # race conditions in high-traffic scenarios (see incident #1247)
