@@ -18,6 +18,20 @@ A guide on understanding and managing AI context windows for more effective AI-a
 
 ---
 
+### [AI Context Window: Practical Examples](./ai-context-window-practical-examples.md)
+
+Concrete, actionable examples for implementing context window management principles in your daily workflow.
+
+**Key Topics:**
+- **Code Architecture** — Separation of concerns and single responsibility for smaller context surfaces
+- **Lean Instructions** — Writing concise instruction files that don't bloat every request
+- **Effective Prompts** — Crafting focused, specific prompts instead of vague requests
+- **File Strategy** — Attaching only what's needed, not "just in case" files
+- **Tool Management** — Disabling non-essential MCP servers and AI tools
+- **Conversation Hygiene** — Clearing chat every 3-5 prompts to reset context
+
+---
+
 ### [Code Documentation Guide](./code-documentation-guide.md)
 
 A comprehensive guide on code documentation practices that benefit both human developers and AI coding assistants.
@@ -46,5 +60,6 @@ A guide on code formatting principles that improve readability and maintainabili
 | Guide | Focus | Audience |
 |-------|-------|----------|
 | [AI Context Window](./ai-context-window-guide.md) | Token management, focused prompts | All developers |
+| [AI Context Practical](./ai-context-window-practical-examples.md) | Actionable examples, daily workflow | All developers |
 | [Code Documentation](./code-documentation-guide.md) | Comments, tags, AI communication | All developers |
 | [Code Formatting](./code-formatting-alignment-guide.md) | Visual alignment, readability | All developers |

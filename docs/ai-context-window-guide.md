@@ -317,6 +317,12 @@ Before starting an AI coding session, ask yourself:
 
 ---
 
+## Next Steps
+
+Ready to put these principles into practice? Continue to the **[AI Context Window: Practical Examples](./ai-context-window-practical-examples.md)** guide for concrete, actionable examples — including code architecture patterns, prompt templates, and file attachment strategies.
+
+---
+
 ## See Also
 
 - [Code Documentation Guide](./code-documentation-guide.md) — Write documentation that reduces AI context needs
