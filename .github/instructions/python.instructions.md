@@ -2,278 +2,144 @@
 applyTo: "*.py,*.ipynb"
 ---
 
-# You are a Python expert specializing in clean, performant, and idiomatic Python code.
+# Python-Specific Standards
 
 ## Platform & Environment
-- **Target Platform**: Windows Server 2022
-- **Windows Compatibility**: Always prioritize Windows-compatible solutions
-  - Use `pathlib.Path` for all file system operations (cross-platform, but Windows-first)
-  - Be mindful of Windows path separators, file locking, and NTFS-specific behaviors
-  - Prefer Windows-native solutions when performance or compatibility is critical
-  - Test file operations with Windows line endings (CRLF) in mind
+- **Target**: Windows Server compatible, Python 3.10+
+- Use `pathlib.Path` for all file operations (Windows compatible path handling)
+- Be mindful of NTFS behaviors and CRLF line endings
 
-## Focus Areas
-- Advanced Python features (decorators, metaclasses, descriptors)
-- Async/await and concurrent programming
-- Performance optimization and profiling
-- Memory management and profiling
-- Type hinting and static analysis (Pylance, mypy)
-- Code readability and maintainability
-- Simple, effective solutions
+## Python-Specific Approach
+1. **100% Pylance compliance** in `standard` mode - zero warnings
+2. **Modern syntax**: pipe unions (`|`), match statements, walrus operator (`:=`)
+3. **Generators** for memory efficiency on large datasets
+4. **Zen of Python** as guiding philosophy
 
-## Approach
-1. **Strict code quality**  - 100% Pylance compliance, comprehensive type annotations, zero warnings
-2. **Modern Python syntax** - Python 3.10+ features, pipe unions, match statements, walrus operator, etc
-3. **Always use** - Princimples from: KISS, DRY, YAGNI, SINGLE RESPONSIBILITY and the Zen of Python
-   - Write clean, readable, and maintainable code : **DON'T OVERCOMPLICATE / OVERENGINEER**
-4. Prefer composition over inheritance
-5. Use generators for memory efficiency
-6. Comprehensive error handling with custom exceptions
+# Type Hinting - STRICT MODE
 
-## Output
-- Clean Python code with type hints
-- Performance benchmarks for critical paths
-- Documentation with docstrings and examples
-- Refactoring suggestions for existing code
-- Memory and CPU profiling results when relevant
+- Add `from __future__ import annotations` at top of every file
+- **Every** function, method, class attribute, and variable must have type annotations
+- Use modern syntax:
+  - `str | None` not `Optional[str]`
+  - `list[int]` not `List[int]`
+  - `dict[str, Any]` not `Dict[str, Any]`
+- Explicit `-> None` for functions without return values
 
-Leverage Python's standard library first. Use third-party packages `sparingly and judiciously`.
+## Preferred Python Patterns
 
-# Coding Standards
+- **`pathlib.Path`** over `os.path` for filesystem operations
+- **`@dataclass`** for simple data containers
+- **`Pydantic BaseModel`** for validation, settings, and external data parsing
+- **`collections.abc`** for protocols (`Callable`, `Iterable`, `Mapping`) over `typing` variants
 
-## Type Hinting Requirements - STRICT MODE COMPLIANCE
-- **CRITICAL REQUIREMENT**: ALL code must pass Pylance type checking in `standard` mode, with modern `python 3.10.10` syntax
-- **MANDATORY**: Every function, method, class, and variable must have complete, accurate type annotations
-- Always add: `from __future__ import annotations` at the top of the file to support forward references
-- Use modern `python 3.10.10` union syntax with pipe operator (`|`) instead of deprecated `Union`
-- Use modern `| None` syntax instead of `Optional`
-- Use built-in collection types (`list`, `dict`, `tuple`, `set`) instead of deprecated `typing` equivalents
-- Class attributes and instance variables must be explicitly typed
-- Complex return types must use precise compound types with modern syntax
-- When functions don't return a value, explicitly use `-> None`
+```python
+from pathlib        import Path
+from dataclasses    import dataclass
+from pydantic       import BaseModel, Field
 
-## Modern Python Standards - MANDATORY
-- **Prefer `pathlib.Path`** over `os.path` for all file system operations
-- **Prefer `from dataclasses import dataclass, field`** over `TypedDict` or plain classes  with `__init__` methods, for data containers
-- **Prefer `Pydantic`** for data validation, settings management, and parsing external data
-- Use these modern approaches to write cleaner, more maintainable code:
-  ```python
-  from pathlib import Path
-  from dataclasses import dataclass
-  from pydantic import BaseModel, Field
+# Filesystem
+config_file = Path('config') / 'settings.json'
 
-  # Good - Modern pathlib
-  config_file = Path('config') / 'settings.json'
-  if config_file.exists():
-      content = config_file.read_text()
+# Simple data container
+@dataclass
+class Point:
+    x     : float
+    y     : float
+    label : str = "origin"
 
-  # Good - Dataclass for simple data containers
-  @dataclass
-  class Point:
-      x: float
-      y: float
-      label: str = "origin"
+# Validated model
+class Config(BaseModel):
+    host    : str
+    port    : int   = Field(gt=0, le=65535)
+    timeout : float = 30.0
+```
 
-  # Good - Pydantic for validated models
-  class Config(BaseModel):
-      host: str
-      port: int = Field(gt=0, le=65535)
-      timeout: float = 30.0
-  ```
+## Python Function Signatures
 
-## Function Signature Formatting
-- Always use multiline format with 8-space indentation for parameters:
-  ```python
-  def extract_station_substation(
-          address: str
-      ) -> tuple[str, str, str]:
-  ```
-- For functions with multiple parameters, maintain the same indentation pattern:
-  ```python
-  def complex_function(
-          param1: str,
-          param2: int,
-          param3: dict[str, Any] | None
-      ) -> tuple[str, str, str]:
-  ```
-- Place the return type annotation on its own line with proper indentation
+Use multiline format with 8-space indentation:
 
-## Code Formatting & Alignment
-- Align variable assignments for improved readability when declaring multiple related variables:
-  ```python
-  test          = 1
-  somethingelse = 2
-  another_var   = 3
-  ```
-- Align dictionary keys and values with spaces around colons, aligning to the longest key:
-  ```python
-  config = {
-      'somevalue'           : 'somekey',
-      'someothervalue'      : 'someotherkey',
-      'short'               : 'val',
-      'very_long_key_name'  : 'corresponding_value'
-  }
+```python
+def complex_function(
+        param1  : str,
+        param2  : int,
+        param3  : dict[str, Any] | None = None
+    ) -> tuple[str, str, str]:
+```
 
-  schema_properties = {
-      "short_key"           : {"type": "string"},
-      "much_longer_key"     : {"type": "boolean"},
-      "medium_length_key"   : {"type": "number"}
-  }
-  ```
-- Align function parameters and arguments when spanning multiple lines:
-  ```python
-  # Function definitions with default values
-  def __init__(
-          self,
-          log_file_pattern       : str,
-          database_path          : str,
-          archive_interval       : float         = 600.0,  # 10 minutes default
-          hot_log_file           : str | None    = None,
-          backup_processed_files : bool          = False,
-          backup_directory       : str | None    = None,
-          max_batch_size         : int           = 10000,
-          vacuum_interval        : int           = 24  # Hours between VACUUM operations
-      ) -> None:
+## Python-Specific Alignment Examples
 
-  # Function calls with aligned arguments
-  function_call(
-      short_param     = value1,
-      longer_param    = value2,
-      very_long_param = value3
-  )
-  ```
-- Format arrays, lists, and tuples in readable multi-line structures:
-  ```python
-  required_fields = [
-      "program_name",
-      "program_config_id",
-      "timeout",
-      "is_activate",
-      "is_val",
-      "output_dir",
-      "cert_path"
-  ]
+> Base alignment rules from `copilot-instructions.md` apply. These show Python syntax:
 
-  coordinates = (
-      latitude,
-      longitude,
-      altitude
-  )
-  ```
-- Align class attributes and their type annotations:
-  ```python
-  class DataProcessor:
-      config        : dict[str, Any]
-      results       : list[str]
-      is_ready      : bool = False
-      error_count   : int  = 0
-      last_updated  : str  = ""
-  ```
-- Align import statements within groups for better visual organization:
-  ```python
-  # Modern type hinting imports - only import what's not available as built-ins
-  from typing import (
-      Any,        # Generic type for flexible data structures
-      Protocol,   # For structural subtyping
-      TypeVar,    # For generic type variables
-      Callable    # For function type hints (when collections.abc.Callable isn't sufficient)
-  )
+```python
+# Class attributes
+class DataProcessor:
+    config      : dict[str, Any]
+    results     : list[str]
+    is_ready    : bool = False
 
-  # Collections from standard library for type hints
-  from collections.abc import (
-      Iterator,   # For iterator type hints
-      Generator,  # For generator type hints
-      Callable    # For function type hints
-  )
-  ```
-- Maintain consistent spacing in complex data structures:
-  ```python
-  nested_config = {
-      'database'   : {
-          'host'     : 'localhost',
-          'port'     : 5432,
-          'username' : 'admin'
-      },
-      'logging'    : {
-          'level'    : 'INFO',
-          'format'   : '%(asctime)s - %(message)s'
-      }
-  }
-  ```
+# Function with defaults (8-space indent)
+def __init__(
+        self,
+        log_file_pattern : str,
+        archive_interval : float      = 600.0,
+        max_batch_size   : int        = 10000
+    ) -> None:
+```
 
 ## Import Organization
-- Group imports logically (standard library, third-party, project-specific)
-- Use built-in collection types (`list`, `dict`, `tuple`, `set`) instead of `typing` equivalents
-- Only import from `typing` what's truly necessary (like `Any`, `Protocol`, `TypeVar`)
-- Add inline comments to imports explaining their purpose, especially for custom/project-specific modules:
-  ```python
-  # Standard library imports
-  import logging       # For error and debug logging
-  import pandas as pd  # Data manipulation and analysis library
 
-  # Custom tool imports - project-specific modules
-  from utils.nexcap import NEXCAP # NEXCAP API integration
-  from utils.google import GOOGLE # Google Drive API integration
+```python
+# Standard library
+import logging
+from pathlib import Path
 
-  # Modern type hinting imports - minimal usage, prefer built-ins
-  from typing import (
-      Any,        # Generic type for flexible data structures
-      Protocol,   # For structural subtyping
-      TypeVar     # For generic type variables
-  )
-  ```
+# Third-party
+import pandas as pd
 
-## Documentation Requirements
-- Always include comprehensive docstrings for all functions, methods, and classes
-- Use Google-style docstrings with proper Args, Returns, and Example sections
-- Add inline comments throughout function bodies to explain complex logic, business rules, and data transformations
-- Use descriptive variable names and comment when purpose isn't immediately clear
-- Make the code understandable even for developers new to the project
+# Project-specific
+from utils.nexcap import NEXCAP  # NEXCAP API integration
 
-## Code Structure
-- Use section headers with `===` or `---` to structure code into logical blocks
-- Preserve all existing functionality and commented-out sections when modifying code
-- Maintain consistent spacing and alignment for enhanced readability
+# Typing (minimal - prefer built-ins)
+from typing import Any, Protocol, TypeVar
+from collections.abc import Callable, Iterator
+```
 
-## Refactoring
-- Identify and extract duplicate code into reusable functions or methods
-- Simplify complex functions by breaking them down into smaller, more manageable pieces
-- Improve variable names and function signatures for clarity and consistency
-- Remove any dead code, unused variables, or unnecessary comments
-- Optimize performance by using more efficient algorithms or data structures where applicable
-- Use logging extensively so we can easily identify errors
+## Python Docstrings
 
-## Important PEP rules to follow:
+Use Google-style docstrings:
 
-### Essentials for typing and APIs
+```python
+def process_data(items: list[str], limit: int = 100) -> dict[str, int]:
+    """Process items and return frequency counts.
 
-- Language features to adopt
-  - PEP 585 – Built-in generics: use list[int], dict[str, Any], tuple[int, ...] instead of typing.List/Dict/Tuple.
-  - PEP 604 – Union types with |: use int | str and T | None instead of typing.Union/Optional.
-  - PEP 563 – Postponed evaluation of annotations: enable from future import annotations to reduce import-time overhead and avoid forward-ref strings. (Default in 3.11+, but recommended in 3.10.)
-  - PEP 612 – ParamSpec and Concatenate for higher-order callables.
-  - PEP 647 – TypeGuard for user-defined type narrowing.
-  - PEP 544 – Structural subtyping (typing.Protocol and @runtime_checkable).
-  - PEP 593 – Annotated for attaching metadata to types.
-  - PEP 613 – TypeAlias for explicit type alias declarations.
+    Args:
+        items: List of strings to process.
+        limit: Maximum items to process.
 
-- Packaging and project metadata
-  - PEP 634/635/636 – Structural Pattern Matching (match/case) for expressive branching.
-  - PEP 618 – zip(strict=True) to catch length mismatches early.
-  - PEP 584 – dict union operators | and |= (added in 3.9; widely used).
-  - PEP 616 – str.removeprefix / removesuffix (3.9; simplifies string cleanup).
-  - PEP 572 – Assignment expressions (:=) to reduce repetition in loops and conditions.
-  - PEP 570 – Positional-only parameters for clear public APIs.
+    Returns:
+        Dictionary mapping items to their counts.
 
-- Deprecations to heed
-  - PEP 517/518 – Build backends and pyproject.toml-based builds.
-  - PEP 621 – Project metadata in pyproject.toml (name, version, dependencies).
-  - PEP 440 – Version specifiers.
+    Raises:
+        ValueError: If items is empty.
+    """
+```
 
-- Prefer collections.abc (e.g., Callable, Iterable, Mapping) over typing variants of these protocols.
-  - PEP 632 – distutils is deprecated; use setuptools or packaging APIs.
+## Key PEP Standards (Python 3.10+)
 
-- (Others like override/TypeVarTuple depending on needs.)
-  - PEP 655 – Required / NotRequired for TypedDict.
-  - PEP 673 – Self type.
-  - PEP 681 – dataclass_transform for ORM/DTO frameworks.
+**Type Syntax:**
+- PEP 585: `list[int]`, `dict[str, Any]` (built-in generics)
+- PEP 604: `int | str`, `T | None` (union with `|`)
+- PEP 563: `from __future__ import annotations`
+- PEP 544: `Protocol` for structural subtyping
+
+**Modern Features:**
+- PEP 634-636: `match/case` pattern matching
+- PEP 618: `zip(strict=True)`
+- PEP 572: Walrus operator `:=`
+- PEP 570: Positional-only parameters (`/`)
+- PEP 616: `str.removeprefix()` / `removesuffix()`
+
+**Deprecations:**
+- Prefer `collections.abc` over `typing` for protocols
+- Use `pyproject.toml` (PEP 621) over `setup.py`
+- `distutils` is deprecated (PEP 632)

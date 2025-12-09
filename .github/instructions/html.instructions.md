@@ -1,19 +1,35 @@
 ---
-applyTo: "*.html, *.css, *.vue"
+applyTo: "*.html,*.css,*.vue"
 ---
+
 # Modern Web Development Standards
 
-You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS3, and Bootstrap 5.3+. Your focus is on creating clean, maintainable, and performant web applications with well-organized styling.
+You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS3, and Bootstrap 5.3+.
 
 ## Core Technologies
+
 - **HTML5**          : Semantic markup, accessibility (ARIA), modern APIs
 - **Vue.js 3**       : Composition API, reactive data, component architecture
 - **CSS3**           : Modern features including nesting, custom properties, container queries
 - **Bootstrap 5.3+** : Utility classes, component customization, dark mode support
 
+---
+
+## Focus Areas
+
+- Clean, semantic HTML5 markup
+- Modern CSS features (nesting, custom properties, container queries)
+- Vue.js 3 Composition API patterns
+- Accessibility (ARIA) compliance
+- Responsive, mobile-first design
+- Performance and maintainability
+
+---
+
 ## CSS Organization & Architecture
 
 ### CSS Nesting (Modern Syntax)
+
 - **ALWAYS use modern CSS nesting** for better organization and readability
 - Nest related selectors logically to mirror HTML structure
 - Use `&` for pseudo-classes, pseudo-elements, and modifier classes
@@ -22,16 +38,16 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
 ```css
 /* ✅ GOOD - Modern CSS Nesting */
 .card {
-    padding: 1rem;
-    border-radius: 8px;
+    padding       : 1rem;
+    border-radius : 8px;
 
     &:hover {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .card-header {
-        font-weight: bold;
-        margin-bottom: 0.5rem;
+        font-weight   : bold;
+        margin-bottom : 0.5rem;
 
         &.primary {
             color: var(--bs-primary);
@@ -60,23 +76,93 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
     }
 
     @media (min-width: 1200px) {
-        padding: 3rem;
-        max-width: 1140px;
+        padding   : 3rem;
+        max-width : 1140px;
     }
 }
 ```
 
-### CSS Structure & Grouping
-- **Organize CSS into logical sections** with clear comment headers
-- Use consistent section dividers (e.g., `/* ============================================================ */`)
-- Group related styles together (navigation, forms, tables, etc.)
-- Place global styles and variables at the top
-- Order properties logically within rules (layout → box model → typography → visual)
+### CSS Property Ordering
+
+Within each rule, order properties logically:
+
+1. **Layout**     (display, position, top/right/bottom/left, z-index)
+2. **Box Model**  (width, height, margin, padding, border)
+3. **Typography** (font-*, line-height, text-*, letter-spacing)
+4. **Visual**     (background, color, box-shadow, opacity)
+5. **Animation**  (transition, animation, transform)
 
 ```css
-/* ============================================================
+.example {
+    /* Layout */
+    display  : flex;
+    position : relative;
+    z-index  : 10;
+
+    /* Box Model */
+    width         : 100%;
+    max-width     : 1200px;
+    margin        : 0 auto;
+    padding       : 2rem;
+    border        : 1px solid var(--bs-border-color);
+    border-radius : var(--border-radius);
+
+    /* Typography */
+    font-size   : 1rem;
+    font-weight : 400;
+    line-height : 1.6;
+    text-align  : center;
+
+    /* Visual */
+    background : var(--bs-body-bg);
+    color      : var(--bs-body-color);
+    box-shadow : 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    /* Animation */
+    transition: all 0.3s ease;
+}
+```
+
+### CSS Custom Properties (Variables)
+
+```css
+:root {
+    /* Color palette */
+    --primary-color   : #0d6efd;
+    --secondary-color : #6c757d;
+    --success-color   : #198754;
+    --danger-color    : #dc3545;
+
+    /* Spacing */
+    --spacing-xs : 0.25rem;
+    --spacing-sm : 0.5rem;
+    --spacing-md : 1rem;
+    --spacing-lg : 2rem;
+
+    /* Transitions */
+    --transition-fast   : 0.15s;
+    --transition-normal : 0.3s;
+    --transition-slow   : 0.5s;
+
+    /* Border radius */
+    --border-radius: 8px;
+}
+
+.component {
+    padding    : var(--spacing-md);
+    color      : var(--primary-color);
+    transition : all var(--transition-normal) ease;
+}
+```
+
+---
+
+## CSS Structure Example
+
+```css
+/* ============================================================================
    GLOBAL VARIABLES & CUSTOM PROPERTIES
-   ============================================================ */
+   ============================================================================ */
 
 :root {
     --primary-color   : #0d6efd;
@@ -85,19 +171,19 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
     --transition-speed: 0.3s;
 }
 
-/* ============================================================
+/* ============================================================================
    NAVIGATION & HEADER
-   ============================================================ */
+   ============================================================================ */
 
 .navbar {
-    padding        : 1rem;
-    background     : var(--primary-color);
+    padding    : 1rem;
+    background : var(--primary-color);
 
     .navbar-brand {
-        display        : flex;
-        align-items    : center;
-        gap            : 0.5rem;
-        font-weight    : bold;
+        display     : flex;
+        align-items : center;
+        gap         : 0.5rem;
+        font-weight : bold;
 
         &:hover {
             opacity: 0.9;
@@ -111,19 +197,17 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
         .nav-item {
             position: relative;
 
-            &.active {
-                .nav-link {
-                    color           : white;
-                    background-color: rgba(255, 255, 255, 0.1);
-                }
+            &.active .nav-link {
+                color            : white;
+                background-color : rgba(255, 255, 255, 0.1);
             }
         }
     }
 }
 
-/* ============================================================
+/* ============================================================================
    FORMS & INPUTS
-   ============================================================ */
+   ============================================================================ */
 
 .form-control {
     border-radius : var(--border-radius);
@@ -135,7 +219,7 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
     }
 
     &.is-invalid {
-        border-color : var(--bs-danger);
+        border-color: var(--bs-danger);
 
         &:focus {
             box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
@@ -143,9 +227,9 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
     }
 }
 
-/* ============================================================
+/* ============================================================================
    TABLES & DATA DISPLAY
-   ============================================================ */
+   ============================================================================ */
 
 .table {
     border-collapse : separate;
@@ -172,29 +256,27 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
         }
     }
 
-    tbody {
-        tr {
-            transition: background-color 0.2s ease;
+    tbody tr {
+        transition: background-color 0.2s ease;
 
-            &:hover {
-                background-color: var(--bs-light);
-            }
+        &:hover {
+            background-color: var(--bs-light);
+        }
 
-            &.selected {
-                background-color: var(--bs-primary-bg-subtle);
-            }
+        &.selected {
+            background-color: var(--bs-primary-bg-subtle);
+        }
 
-            td {
-                padding       : 0.75rem 1rem;
-                vertical-align: middle;
-            }
+        td {
+            padding        : 0.75rem 1rem;
+            vertical-align : middle;
         }
     }
 }
 
-/* ============================================================
+/* ============================================================================
    DARK MODE OVERRIDES
-   ============================================================ */
+   ============================================================================ */
 
 [data-bs-theme="dark"] {
     .navbar {
@@ -205,97 +287,178 @@ You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS
         }
     }
 
-    .table {
-        thead {
-            background: var(--bs-dark);
+    .table thead {
+        background: var(--bs-dark);
 
-            th {
-                border-color: var(--bs-border-color);
-                color       : var(--bs-light);
-            }
+        th {
+            border-color : var(--bs-border-color);
+            color        : var(--bs-light);
         }
+    }
 
-        tbody {
-            tr {
-                &:hover {
-                    background-color: rgba(255, 255, 255, 0.05);
-                }
-            }
+    .table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+}
+```
+
+---
+
+## Modern CSS Features to Leverage
+
+### Container Queries
+
+```css
+.card-container {
+    container-type : inline-size;
+    container-name : card;
+
+    .card {
+        padding: 1rem;
+
+        @container card (min-width: 400px) {
+            display               : grid;
+            grid-template-columns : 1fr 2fr;
+            gap                   : 2rem;
         }
     }
 }
 ```
 
-### CSS Property Ordering
-Within each rule, order properties logically:
-
-1. **Layout**     (display, position, top/right/bottom/left, z-index)
-2. **Box Model**  (width, height, margin, padding, border)
-3. **Typography** (font-*, line-height, text-*, letter-spacing)
-4. **Visual**     (background, color, box-shadow, opacity)
-5. **Animation**  (transition, animation, transform)
+### Modern Selectors
 
 ```css
-.example {
-    /* Layout */
-    display  : flex;
-    position : relative;
-    z-index  : 10;
+/* :is() for grouping */
+:is(h1, h2, h3, h4, h5, h6) {
+    font-weight : 600;
+    line-height : 1.2;
+    margin-top  : 0;
+}
 
-    /* Box Model */
-    width         : 100%;
-    max-width     : 1200px;
-    margin        : 0 auto;
-    padding       : 2rem;
-    border        : 1px solid var(--bs-border-color);
-    border-radius : var(--border-radius);
+/* :where() for zero-specificity */
+:where(.btn) {
+    padding       : 0.5rem 1rem;
+    border-radius : 0.25rem;
+}
 
-    /* Typography */
-    font-size     : 1rem;
-    font-weight   : 400;
-    line-height   : 1.6;
-    text-align    : center;
-
-    /* Visual */
-    background : var(--bs-body-bg);
-    color      : var(--bs-body-color);
-    box-shadow : 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    /* Animation */
-    transition : all 0.3s ease;
+/* :has() for parent selection */
+.form-group:has(.is-invalid) {
+    border-left: 3px solid var(--bs-danger);
 }
 ```
 
-### CSS Property Alignment
-- **Align property values** with consistent spacing for readability
-- Use spaces around colons to align values to the longest property name
-- Maintain alignment within nested blocks
+---
 
-```css
-.aligned-example {
-    display        : flex;
-    flex-direction : column;
-    align-items    : center;
-    gap            : 1rem;
-    padding        : 2rem;
-    margin         : 0 auto;
-    border-radius  : 8px;
-    background     : var(--bs-primary);
-    color          : white;
+## HTML5 Best Practices
 
-    .nested-element {
-        width           : 100%;
-        max-width       : 600px;
-        padding         : 1rem;
-        border          : 1px solid rgba(255, 255, 255, 0.2);
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-}
+### Semantic Markup
+
+Use appropriate semantic elements for better accessibility and SEO:
+
+```html
+<!-- ✅ GOOD - Semantic HTML -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">App Name</a>
+        <button class="navbar-toggler" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<main class="container">
+    <section class="data-section">
+        <header>
+            <h1>Dashboard</h1>
+            <p class="lead">Overview of your data</p>
+        </header>
+
+        <article class="data-table">
+            <!-- Table content -->
+        </article>
+    </section>
+</main>
+
+<footer class="bg-dark text-light py-3">
+    <div class="container">
+        <p>&copy; 2025 Company Name</p>
+    </div>
+</footer>
 ```
+
+### HTML Attribute Ordering
+
+Use proper attribute ordering for consistency:
+1. `id`
+2. `class`
+3. `v-*` (Vue directives)
+4. `@` (Vue event handlers)
+5. Other attributes
+
+```html
+<input
+    id="searchInput"
+    class="form-control"
+    v-model="filters.search"
+    @input="handleSearch"
+    type="text"
+    placeholder="Search..."
+    aria-describedby="searchHelp"
+>
+```
+
+---
+
+## Accessibility (ARIA)
+
+### Loading Indicators
+
+```html
+<div v-if="loading" role="status" aria-live="polite">
+    <span class="spinner-border" aria-hidden="true"></span>
+    <span class="visually-hidden">Loading data...</span>
+</div>
+```
+
+### Form Inputs
+
+```html
+<div class="mb-3">
+    <label for="searchInput" class="form-label">Search</label>
+    <input
+        id="searchInput"
+        class="form-control"
+        v-model="filters.search"
+        type="text"
+        placeholder="Enter search term"
+        aria-describedby="searchHelp"
+    >
+    <small id="searchHelp" class="form-text">
+        Search by name, category, or description
+    </small>
+</div>
+```
+
+### Buttons with Icons
+
+```html
+<button
+    type="button"
+    class="btn btn-primary"
+    @click="refresh"
+    aria-label="Refresh data"
+>
+    <i class="bi-arrow-clockwise" aria-hidden="true"></i>
+    Refresh
+</button>
+```
+
+---
 
 ## Vue.js 3 Best Practices
 
 ### Component Structure
+
 ```javascript
 const { createApp } = Vue;
 
@@ -315,8 +478,8 @@ createApp({
             showFilters : true,
 
             // Data
-            items       : [],
-            totalItems  : 0
+            items      : [],
+            totalItems : 0
         };
     },
 
@@ -357,8 +520,8 @@ createApp({
         async loadData() {
             this.loading = true;
             try {
-                const response = await axios.get('/api/data');
-                this.items     = response.data.items;
+                const response  = await axios.get('/api/data');
+                this.items      = response.data.items;
                 this.totalItems = response.data.total;
             } catch (error) {
                 console.error('Error loading data:', error);
@@ -402,19 +565,20 @@ createApp({
 ```
 
 ### Vue.js Code Organization
+
 - **Group related data properties** logically (filters, UI state, data)
 - **Use computed properties** for derived state instead of methods when possible
 - **Add JSDoc comments** to methods explaining their purpose and parameters
 - **Handle async operations** with proper error handling and loading states
 - **Clean up resources** in lifecycle hooks (event listeners, timers, etc.)
 - **Use meaningful variable names** that clearly indicate purpose
-- **Align object properties** with consistent spacing (matching Python style)
+- **Align object properties** with consistent spacing
 
-### Bootstrap 5.3+ Integration
-- Leverage Bootstrap's CSS custom properties for theming
-- Use utility classes for rapid prototyping
-- Customize via CSS variables rather than Sass when possible
-- Implement dark mode using `data-bs-theme` attribute
+---
+
+## Bootstrap 5.3+ Integration
+
+### Dark Mode Toggle
 
 ```html
 <!-- Dark mode toggle with Bootstrap -->
@@ -427,243 +591,58 @@ createApp({
 </div>
 ```
 
-## HTML5 Best Practices
+### Best Practices
 
-### Semantic Markup
-- Use appropriate semantic elements (`<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<header>`, `<footer>`)
-- Include proper heading hierarchy (h1 → h6)
-- Use `<button>` for interactions, `<a>` for navigation
-- Implement proper form structure with `<label>` elements
+- Leverage Bootstrap's CSS custom properties for theming
+- Use utility classes for rapid prototyping
+- Customize via CSS variables rather than Sass when possible
+- Implement dark mode using `data-bs-theme` attribute
 
-```html
-<!-- ✅ GOOD - Semantic HTML -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">App Name</a>
-        <button class="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
-
-<main class="container">
-    <section class="data-section">
-        <header>
-            <h1>Dashboard</h1>
-            <p class="lead">Overview of your data</p>
-        </header>
-
-        <article class="data-table">
-            <!-- Table content -->
-        </article>
-    </section>
-</main>
-
-<footer class="bg-dark text-light py-3">
-    <div class="container">
-        <p>&copy; 2025 Company Name</p>
-    </div>
-</footer>
-```
-
-### Accessibility (ARIA)
-- Include ARIA labels for screen readers
-- Use `aria-live` for dynamic content updates
-- Implement proper focus management
-- Ensure keyboard navigation works properly
-
-```html
-<!-- Accessible loading indicator -->
-<div v-if="loading" role="status" aria-live="polite">
-    <span class="spinner-border" aria-hidden="true"></span>
-    <span class="visually-hidden">Loading data...</span>
-</div>
-
-<!-- Accessible form input -->
-<div class="mb-3">
-    <label for="searchInput" class="form-label">Search</label>
-    <input
-        type="text"
-        id="searchInput"
-        class="form-control"
-        v-model="filters.search"
-        aria-describedby="searchHelp"
-        placeholder="Enter search term"
-    >
-    <small id="searchHelp" class="form-text">
-        Search by name, category, or description
-    </small>
-</div>
-
-<!-- Accessible button with icon -->
-<button
-    type="button"
-    class="btn btn-primary"
-    @click="refresh"
-    aria-label="Refresh data"
->
-    <i class="bi-arrow-clockwise" aria-hidden="true"></i>
-    Refresh
-</button>
-```
+---
 
 ## Code Quality Standards
 
 ### HTML
+
 - Use semantic HTML5 elements appropriately
 - Include proper ARIA attributes for accessibility
 - Keep markup clean and properly indented (2 or 4 spaces consistently)
 - Use Vue directives appropriately (`v-if`, `v-for`, `v-bind`, `v-model`, `v-on`/`@`)
 - Add `:key` bindings for `v-for` loops
-- Use proper attribute ordering: `id`, `class`, `v-*`, `@`, other attributes
 
 ### CSS
+
 - **Use CSS custom properties** for maintainable theming
 - **Implement responsive design** with mobile-first approach
 - **Leverage modern CSS features** (nesting, `:is()`, `:where()`, container queries, `@layer`)
 - **Avoid `!important`** unless absolutely necessary (document why if used)
 - **Use meaningful class names** (BEM or similar methodology)
 - **Always use nesting** for related selectors and modifiers
-- **Align properties** for improved readability (matching Python alignment style)
-- **Group and section** CSS logically with clear comment headers
+- **Align properties** for improved readability
 
 ### JavaScript/Vue
+
 - Use modern ES6+ syntax (arrow functions, destructuring, async/await, template literals)
 - Handle errors gracefully with try/catch blocks
 - Implement loading states for async operations
 - Use Vue reactivity system efficiently (avoid unnecessary re-renders)
 - Add JSDoc comments to explain complex logic and method purposes
 - Use `const` and `let` appropriately (prefer `const` when possible)
-- Align object properties with consistent spacing (matching Python style)
+- Align object properties with consistent spacing
 
-## Output Format
+---
 
-### When Providing Code
-1. **Start with HTML structure** (semantic, accessible)
-2. **Follow with organized, nested CSS** (clearly sectioned with dividers)
-3. **Include Vue.js logic** (well-structured component code)
-4. **Add brief explanations** for complex implementations
-5. **Suggest optimizations** or modern alternatives when relevant
+## Important Best Practices Summary
 
-### Documentation Requirements
-- **Add comments** explaining purpose of sections and complex logic
-- **Use clear section headers** in CSS (with `/* ==== */` dividers)
-- **Include JSDoc comments** for Vue.js methods
-- **Document expected behavior** for interactive elements
-- **Explain accessibility features** where implemented
-
-### Code Formatting
-- **Maintain consistent indentation** (2 or 4 spaces, stay consistent)
-- **Align properties/values** with spacing (CSS and JavaScript objects)
-- **Group related code** logically
-- **Use blank lines** to separate logical sections
-- **Follow the alignment rules** from the Python instructions (applied to CSS/JS)
-
-## Modern CSS Features to Leverage
-
-### CSS Nesting
-```css
-/* Use nesting extensively for organization */
-.card {
-    padding: 1rem;
-
-    &:hover {
-        transform: translateY(-2px);
-    }
-
-    .card-title {
-        font-size: 1.25rem;
-
-        &.highlighted {
-            color: var(--bs-primary);
-        }
-    }
-}
-```
-
-### CSS Custom Properties (Variables)
-```css
-:root {
-    /* Color palette */
-    --primary-color   : #0d6efd;
-    --secondary-color : #6c757d;
-    --success-color   : #198754;
-    --danger-color    : #dc3545;
-
-    /* Spacing */
-    --spacing-xs : 0.25rem;
-    --spacing-sm : 0.5rem;
-    --spacing-md : 1rem;
-    --spacing-lg : 2rem;
-
-    /* Transitions */
-    --transition-fast   : 0.15s;
-    --transition-normal : 0.3s;
-    --transition-slow   : 0.5s;
-}
-
-.component {
-    padding    : var(--spacing-md);
-    color      : var(--primary-color);
-    transition : all var(--transition-normal) ease;
-}
-```
-
-### Container Queries (when appropriate)
-```css
-.card-container {
-    container-type: inline-size;
-    container-name: card;
-
-    .card {
-        padding: 1rem;
-
-        @container card (min-width: 400px) {
-            display        : grid;
-            grid-template-columns: 1fr 2fr;
-            gap            : 2rem;
-        }
-    }
-}
-```
-
-### Modern Selectors
-```css
-/* :is() for grouping */
-:is(h1, h2, h3, h4, h5, h6) {
-    font-weight : 600;
-    line-height : 1.2;
-    margin-top  : 0;
-}
-
-/* :where() for zero-specificity */
-:where(.btn) {
-    padding       : 0.5rem 1rem;
-    border-radius : 0.25rem;
-}
-
-/* :has() for parent selection */
-.form-group:has(.is-invalid) {
-    border-left : 3px solid var(--bs-danger);
-}
-```
-
-## Response Structure
-When answering questions or providing solutions:
-
-1. **Understand the context**      - Consider existing code structure and patterns
-2. **Provide complete solutions**  - Don't skip important parts
-3. **Follow established patterns** - Match the coding style already in use
-4. **Explain your choices**        - Brief comments on why you chose a particular approach
-5. **Suggest improvements**        - When you see opportunities for optimization or modernization
-6. **Maintain consistency**        - With both Python and HTML/CSS/JS standards in the project
-
-## Remember
-- **Clean, readable code** is more important than clever code
-- **Accessibility** is not optional - always consider screen readers and keyboard navigation
-- **Performance matters** - use efficient selectors and minimize re-renders
-- **Modern features** should be used when they improve code quality
-- **Comments and documentation** help future developers (including yourself)
-- **Alignment and organization** make code easier to scan and maintain
-
-Focus on creating maintainable, accessible, and performant web applications that follow modern best practices and align with the project's established coding standards.
+| # | Principle | Description |
+|---|-----------|-------------|
+| 1 | **Semantic HTML** | Use appropriate elements (`<nav>`, `<main>`, `<article>`, etc.) |
+| 2 | **Accessibility** | Include ARIA labels, proper focus management, keyboard navigation |
+| 3 | **CSS Nesting** | Use modern CSS nesting for organization and readability |
+| 4 | **Custom Properties** | Use CSS variables for maintainable theming |
+| 5 | **Mobile-first** | Design for mobile, enhance for larger screens |
+| 6 | **Performance** | Minimize re-renders, use efficient selectors |
+| 7 | **Dark Mode** | Support `data-bs-theme` for Bootstrap integration |
+| 8 | **Vue Best Practices** | Computed properties, lifecycle cleanup, error handling |
+| 9 | **Property Alignment** | Align CSS properties and JS object values for readability |
+| 10 | **Documentation** | Comment complex logic, use JSDoc for methods |
