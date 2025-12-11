@@ -28,5 +28,8 @@
     "python.terminal.focusAfterLaunch": true,
     "chat.useNestedAgentsMdFiles": true,
     "chat.mcp.gallery.enabled": true,
-    "jupyter.notebookFileRoot": "${workspaceFolder}"
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+    "github.copilot.chat.cli.customAgents.enabled": true,
+    "chat.customAgentInSubagent.enabled": true,
+    "inlineChat.enableV2": true
 }
