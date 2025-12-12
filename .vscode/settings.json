@@ -31,5 +31,9 @@
     "jupyter.notebookFileRoot": "${workspaceFolder}",
     "github.copilot.chat.cli.customAgents.enabled": true,
     "chat.customAgentInSubagent.enabled": true,
-    "inlineChat.enableV2": true
+    "inlineChat.enableV2": true,
+    "github.copilot.chat.languageContext.inline.typescript.enabled": true,
+    "github.copilot.chat.languageContext.typescript.enabled": true,
+    "github.copilot.chat.languageContext.fix.typescript.enabled": true,
+    "github.copilot.chat.notebook.enhancedNextEditSuggestions.enabled": true
 }

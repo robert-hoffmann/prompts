@@ -137,24 +137,55 @@ function complexFunction(param1, param2) {
 
 ## Import Organization
 
-Group imports by source with section headers:
+> **Every import must be documented.** Imports tell the story of a file's dependencies.
+
+### Import Documentation Rules
+
+1. **Section headers**     — Group imports with `===` separators (Node.js core, Third-party, Types, Project)
+2. **Single-line imports** — Add inline comment explaining what the import provides
+3. **Multi-import blocks** — Each import on its own line with aligned inline comments
+4. **Alignment**           — Align both imports and comments into columns
+
+### Example
 
 ```typescript
 // ============================================================================
-// Node.js core | Third-party | Type imports | Project modules
+// Node.js Core
 // ============================================================================
-import fs         from 'fs';          // File system operations
-import path       from 'path';        // Path manipulation
+import fs   from 'fs';   // File system operations
+import path from 'path'; // Path manipulation utilities
 
-import express    from 'express';     // Web framework
-import axios      from 'axios';       // HTTP client
+// ============================================================================
+// Third-Party Packages
+// ============================================================================
+import express from 'express'; // Web framework
+import axios   from 'axios';   // HTTP client
 
-import type { UserConfig } from './types';
+// React hooks for state and lifecycle management
+import {
+    useState,    // Component state management
+    useEffect,   // Side effects and lifecycle
+    useCallback, // Memoized callback functions
+    useMemo      // Memoized computed values
+} from 'react';
 
-import { logger } from './utils/logger';
+// ============================================================================
+// Type Imports
+// ============================================================================
+import type { UserConfig } from './types';  // User configuration interface
+
+// ============================================================================
+// Project Modules
+// ============================================================================
+import { logger }    from './utils/logger';   // Application logger
+import { config }    from './config';         // App configuration
+import { validate }  from './utils/validate'; // Input validation helpers
 ```
 
-**Rules:** ES6 modules over CommonJS, named imports over default, inline comments for custom modules.
+**Rules:**
+- ES6 modules over CommonJS
+- Named imports over default when multiple exports exist
+- Inline comments for every import explaining its purpose
 
 ---
 

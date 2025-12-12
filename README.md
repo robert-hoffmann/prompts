@@ -25,10 +25,9 @@ Instructions are automatically applied based on file type when you open matching
 
 | File | Applies To | Purpose |
 |------|------------|---------|
-| [`html.instructions.md`](.github/instructions/html.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
-| [`js.instructions.md`](.github/instructions/js.instructions.md) | `.js`, `.jsx` | Modern JavaScript ES2020+ with comprehensive JSDoc |
+| [`vuejs.instructions.md`](.github/instructions/vuejs.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
+| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `*.js`, `*.jsx`, `*.ts`, `*.tsx` | Modern JS/TS ES2020+ with comprehensive JSDoc |
 | [`python.instructions.md`](.github/instructions/python.instructions.md) | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
-| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `.ts`, `.tsx` | TypeScript strict mode with full type annotations |
 
 ### 💬 Prompts (On-Demand Actions)
 
@@ -39,7 +38,6 @@ Prompts are invoked manually via Copilot Chat using the `/` command or by select
 | [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) | Ask | Generate Mermaid diagrams with clickable elements linking to source |
 | [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) | Ask | Document Python files with extensive inline comments (preview) |
 | [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) | Edit | Document Python files with inline editing (modifies file directly) |
-| [`explain-code.prompt.md`](.github/prompts/explain-code.prompt.md) | Ask | Beginner-friendly code explanations with JS/C#/PHP comparisons |
 
 ---
 
@@ -182,22 +180,22 @@ git clone https://github.com/robert-hoffmann/prompts.git
 your-project/
 ├── .github/
 │   ├── copilot-instructions.md    # Global instructions (optional)
+│   ├── agents/                    # Custom Agents
+│   │   ├── teacher.agent.md
 │   ├── instructions/              # Auto-applied rules
-│   │   ├── html.instructions.md
-│   │   ├── js.instructions.md
+│   │   ├── vuejs.instructions.md
 │   │   ├── python.instructions.md
 │   │   └── ts.instructions.md
 │   └── prompts/                   # On-demand prompts
 │       ├── diagram-generate.prompt.md
 │       ├── doc-ask.prompt.md
 │       ├── doc-edit.prompt.md
-│       └── explain-code.prompt.md
 ```
 
 ### 3. Start coding! 🎉
 
 - **Instructions** - Automatically applied when you open matching file types
-- **Prompts** - Invoke via Copilot Chat with `@workspace /prompt-name` or select from the prompt picker
+- **Prompts**      - Invoke via Copilot Chat with `@workspace /prompt-name` or select from the prompt picker
 
 ---
 
