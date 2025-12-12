@@ -4,10 +4,10 @@ These principles apply to **ALL** programming languages and file types.
 
 ### Design Principles
 
-1. **KISS** (Keep It Simple, Stupid) — Favor straightforward solutions over clever ones
-2. **DRY** (Don't Repeat Yourself) — Extract repeated logic into reusable components
+1. **KISS**  (Keep It Simple, Stupid)   — Favor straightforward solutions over clever ones
+2. **DRY**   (Don't Repeat Yourself)    — Extract repeated logic into reusable components
 3. **YAGNI** (You Aren't Gonna Need It) — Don't build features until they're actually needed
-4. **Single Responsibility** — Each function, class, or module should do one thing well
+4. **Single Responsibility**            — Each function, class, or module should do one thing well
 
 ### Guiding Mantra
 
@@ -17,9 +17,9 @@ These principles apply to **ALL** programming languages and file types.
 
 ### Architectural Preferences
 
-- **Prefer composition over inheritance** — Build behavior by combining small, focused components rather than deep inheritance hierarchies
+- **Prefer composition over inheritance**                — Build behavior by combining small, focused components rather than deep inheritance hierarchies
 - **Use third-party packages sparingly and judiciously** — Leverage the language's standard library first; only add dependencies when they provide significant value
-- **Comprehensive error handling** — Use appropriate error/exception mechanisms with custom error types where beneficial
+- **Comprehensive error handling**                       — Use appropriate error/exception mechanisms with custom error types where beneficial
 
 ### Focus Areas (Universal)
 
@@ -31,6 +31,8 @@ These apply regardless of language:
 - Code readability and maintainability
 - Simple, effective solutions
 - Async/concurrent programming patterns (where applicable)
+- Always use the most modern language features and idioms
+- Always apply principles like: object-oriented programming, functional programming, modular design, reactive programming.
 
 ### Output Expectations
 
@@ -41,145 +43,125 @@ When generating or modifying code:
 - Offer refactoring suggestions for existing code
 - Include memory/performance profiling results when relevant
 
-
-
+---
 
 # Code Formatting & Alignment
 > **Applies to:** All files (`*.*`)
 
-## Core Alignment Principles
+## The Universal Alignment Rule
 
-Consistent visual alignment improves code readability across **ALL** languages. These patterns should be adapted to each language's syntax while maintaining the core principle: **vertically align related elements**.
+> **When you have a vertical list of related items with a separator, align the separators into a column.**
 
----
+This applies to ALL languages, ALL contexts—code, comments, docstrings, configs, everything.
 
-## Variable/Assignment Alignment
-
-Align the assignment operators (or equivalent) when declaring multiple related variables:
+### The Pattern
 
 ```
-<variable_name>      <assignment_op> <value>
-<longer_name>        <assignment_op> <value>
-<short>              <assignment_op> <value>
+<left>   <sep> <right>
+<longer> <sep> <right>
+<short>  <sep> <right>
 ```
 
-**Principle:** Pad variable names with spaces so assignment operators form a vertical column.
+Where:
+- **Left elements** are padded with spaces to equal length
+- **Separators** (`:`, `=`, `->`, `|`, etc.) form a vertical column
+- **Right elements** start at the same column
 
----
+### Examples Across Contexts
 
-## Object/Dictionary/Map Alignment
+```python
+# Variables
+name        = "Alice"
+age         = 30
+is_active   = True
 
-When defining key-value structures, align both the keys and the separators:
+# Docstrings / Comments
+# Args:
+#     file_path   : Path to the input file.
+#     max_retries : Number of retry attempts.
+#     timeout     : Timeout in seconds.
 
-```
-<structure> = {
-    <key>              : <value>,
-    <longer_key>       : <value>,
-    <short>            : <value>,
-    <very_long_key>    : <value>
+# Dictionaries
+config = {
+    "host"     : "localhost",
+    "port"     : 8080,
+    "debug"    : True
 }
 ```
 
-**Principle:** 
-- Keys are left-aligned
-- Colons/separators form a vertical column
-- Values are left-aligned after the separator
-- Use spaces before the colon/separator for alignment
+```typescript
+// Interfaces
+interface User {
+    id          : number;
+    name        : string;
+    createdAt   : Date;
+}
 
----
-
-## Nested Structure Alignment
-
-For nested objects/dictionaries, maintain alignment within each level:
-
+// Objects
+const settings = {
+    theme       : "dark",
+    fontSize    : 14,
+    autoSave    : true
+};
 ```
-<structure> = {
-    <section_a>  : {
-        <key>      : <value>,
-        <longer>   : <value>
-    },
-    <section_b>  : {
-        <key>      : <value>,
-        <longer>   : <value>
-    }
+
+```css
+/* Properties */
+.container {
+    display         : flex;
+    justify-content : center;
+    align-items     : stretch;
 }
 ```
 
-**Principle:** Each nesting level has its own alignment context.
+### When to Apply
+
+1. **Logically related items** — Group declarations, config blocks, parameter lists
+2. **Vertical lists** — 2+ items that share structure
+3. **Clear separators** — `:`, `=`, `->`, `|`, or similar
+
+### When NOT to Apply
+
+- Single items (nothing to align with)
+- Unrelated declarations
+- Would require excessive padding (>20 spaces)
+
+### The Mindset
+
+> Imagine scanning the code quickly. Can your eye jump straight to what matters? If separators zigzag, alignment helps. If it's already clear, don't force it.
+
+## Multiline Function Signatures
+
+When a function has **2+ parameters**, format with one parameter per line:
+
+```
+function myFunction(
+    param1   : Type1,
+    param2   : Type2,
+    param3   : Type3  = default
+) -> ReturnType {
+    // body
+}
+```
+
+**The pattern mirrors verbose HTML/Vue attributes:**
+
+```html
+<MyComponent
+    prop1   = "value1"
+    prop2   = "value2"
+    :prop3  = "dynamicValue"
+    @event  = "handler"
+/>
+```
+
+**Why:**
+- Easier to scan parameters vertically
+- Clean diffs when adding/removing parameters
+- Aligns with the universal separator alignment rule
+- Consistent across Python, TypeScript, JavaScript, etc.
 
 ---
-
-## Class/Type Property Alignment
-
-When declaring class properties or type fields, align types and default values:
-
-```
-<class_definition>:
-    <property>        : <type>
-    <longer_prop>     : <type>   = <default>
-    <short>           : <type>   = <default>
-```
-
-**Principle:** Align property names, type annotations, and default values into columns.
-
----
-
-## Import/Include Statement Alignment
-
-When importing multiple modules, align with explanatory comments:
-
-```
-<import> <module>       <comment: purpose>
-<import> <module>       <comment: purpose>
-<import> <longer_mod>   <comment: purpose>
-```
-
-**Principle:** Module names and trailing comments should form aligned columns.
-
----
-
-## Array/List/Collection Formatting
-
-For collections with multiple items, prefer vertical formatting:
-
-```
-<collection> = [
-    <item_1>,
-    <item_2>,
-    <item_3>,
-    <item_4>
-]
-```
-
-**Principle:** One item per line, consistent indentation, trailing comma optional (follow language conventions).
-
----
-
-## Function/Method Parameter Alignment
-
-For functions with many parameters, break across lines with alignment:
-
-```
-<function_definition>(
-    <param>          : <type>,
-    <longer_param>   : <type>,
-    <short>          : <type>   = <default>
-) -> <return_type>:
-```
-
-**Principle:** Parameters align vertically, with types and defaults forming columns.
-
----
-
-## General Rules
-
-1. **Consistency within scope** — All related declarations in a block should follow the same alignment
-2. **Don't over-align** — Only align items that are logically related
-3. **Preserve alignment on edits** — When modifying aligned code, maintain the alignment pattern
-4. **IDE/formatter compatibility** — Configure formatters to preserve manual alignment where possible
-
-
-
 
 # Documentation Requirements
 > **Applies to:** All files (`*.*`)
@@ -195,10 +177,10 @@ Good documentation transcends language syntax. These principles apply to **ALL**
 Every function, method, or callable should include:
 
 1. **Brief description** — What the function does (one line)
-2. **Parameters** — Each parameter with its type and purpose
-3. **Return value** — What is returned and its type
+2. **Parameters**        — Each parameter with its type and purpose
+3. **Return value**      — What is returned and its type
 4. **Exceptions/Errors** — What errors can be raised and when
-5. **Example** — Usage example for non-trivial functions
+5. **Example**           — Usage example for non-trivial functions
 
 ```
 <doc_block_start>
@@ -227,9 +209,9 @@ Brief description of what this function does.
 
 Every class, struct, or type definition should include:
 
-1. **Purpose** — What this type represents
+1. **Purpose**               — What this type represents
 2. **Attributes/Properties** — Key fields and their purposes
-3. **Usage context** — When and how to use this type
+3. **Usage context**         — When and how to use this type
 
 ---
 
@@ -237,10 +219,10 @@ Every class, struct, or type definition should include:
 
 Add inline comments throughout code to explain:
 
-- **Complex logic** — Algorithms, formulas, or non-obvious operations
-- **Business rules** — Domain-specific requirements or constraints
+- **Complex logic**        — Algorithms, formulas, or non-obvious operations
+- **Business rules**       — Domain-specific requirements or constraints
 - **Data transformations** — What data looks like before/after operations
-- **Why, not what** — Explain reasoning, not obvious mechanics
+- **Why, not what**        — Explain reasoning, not obvious mechanics
 
 ### Good Inline Comment Examples
 
@@ -264,11 +246,84 @@ Add inline comments throughout code to explain:
 
 ---
 
+## Import Statement Documentation
+
+> **Applies to:** All languages with import/include/require statements
+
+Imports are the entry point to understanding a file's dependencies. Document them clearly with inline comments explaining what each import provides.
+
+**Single-line imports:**
+
+```python
+import asyncio # Async I/O event loop
+import logging # Logging facility
+
+from pathlib import Path # Filesystem path handling
+```
+
+```typescript
+import express from 'express'; // Web framework
+import axios   from 'axios';   // HTTP client
+```
+
+**Multi-import blocks** — when importing multiple items from the same package:
+1. Document the package with a comment above or on the `from` line
+2. Each import on its own line with aligned inline comments
+
+```python
+# Pydantic v2 for validated models and settings
+from pydantic import (
+    BaseModel,       # Base class for validated data models
+    ConfigDict,      # Model configuration (strict, frozen, etc.)
+    Field,           # Field constraints and metadata
+    field_validator, # Field-level validation decorator
+    model_validator  # Cross-field validation decorator
+)
+```
+
+```typescript
+// React hooks for state and lifecycle management
+import {
+    useState,    // Component state
+    useEffect,   // Side effects and lifecycle
+    useCallback, // Memoized callbacks
+    useMemo      // Memoized values
+} from 'react';
+```
+
+**Logical grouping** — organize imports into sections:
+
+1. **Language built-ins / Standard library**
+2. **Third-party packages**
+3. **Project-specific / Local modules**
+
+```python
+# ============================================================================
+# Standard Library
+# ============================================================================
+import asyncio # Async I/O
+import logging # Logging facility
+
+# ============================================================================
+# Third-Party Packages
+# ============================================================================
+from pydantic import BaseModel # Validated data models
+
+# ============================================================================
+# Project-Specific
+# ============================================================================
+from myproject.utils import helper # Local utilities
+```
+
+**Principle:** A developer scanning imports should immediately understand what each dependency provides without looking it up.
+
+---
+
 ## Variable Naming
 
-- **Use descriptive names** — `customerOrderTotal` over `cot` or `x`
+- **Use descriptive names**                        — `customerOrderTotal` over `cot` or `x`
 - **Comment when purpose isn't immediately clear** — especially for abbreviated names or domain terms
-- **Consistent conventions** — Follow language idioms (camelCase, snake_case, etc.)
+- **Consistent conventions**                       — Follow language idioms (camelCase, snake_case, etc.)
 
 ---
 
@@ -303,9 +358,9 @@ Ask yourself:
 - Are the business rules and constraints documented?
 - Is the "why" explained, not just the "what"?
 
+**Principle:** The code IS the documentation — write it so that it tells a clear story.
 
-
-
+---
 
 # Code Structure Guidelines
 > **Applies to:** All files (`*.*`)
@@ -359,18 +414,18 @@ Use visual separators to divide code into logical sections:
 When modifying existing code:
 
 1. **Preserve all existing functionality** — Don't remove features unless explicitly requested
-2. **Keep commented-out sections** — They often contain important context or fallback code
-3. **Maintain existing structure** — Follow the file's established patterns and organization
-4. **Respect existing formatting** — Match the surrounding code's style
+2. **Keep commented-out sections**         — They often contain important context or fallback code
+3. **Maintain existing structure**         — Follow the file's established patterns and organization
+4. **Respect existing formatting**         — Match the surrounding code's style
 
 ---
 
 ## Spacing and Readability
 
-1. **Consistent indentation** — Follow language conventions (spaces vs tabs, indent size)
-2. **Blank lines for separation** — Use blank lines to separate logical blocks
+1. **Consistent indentation**      — Follow language conventions (spaces vs tabs, indent size)
+2. **Blank lines for separation**  — Use blank lines to separate logical blocks
 3. **Alignment for related items** — See above: Code Formatting & Alignment
-4. **Line length limits** — Keep lines readable (typically 80-120 characters)
+4. **Line length limits**          — Keep lines readable (typically 80-120 characters)
 
 ---
 
@@ -379,7 +434,7 @@ When modifying existing code:
 Keep related elements together:
 
 - **Group related functions** — Functions that work together should be near each other
-- **Group related imports** — Organize imports by source (stdlib, third-party, local)
+- **Group related imports**   — Organize imports by source (stdlib, third-party, local)
 - **Group related constants** — Keep configuration values together
 
 ---
@@ -387,12 +442,10 @@ Keep related elements together:
 ## Module/File Size
 
 - **Prefer smaller, focused files** — Each file should have a clear, single purpose
-- **Extract when too large** — If a file grows beyond ~500 lines, consider splitting
-- **Balance granularity** — Don't create files so small they fragment understanding
+- **Extract when too large**        — If a file grows beyond ~1500 lines (with documentation), consider splitting
+- **Balance granularity**           — Don't create files so small they fragment understanding
 
-
-
-
+---
 
 # Refactoring Guidelines
 > **Applies to:** All files (`*.*`)
@@ -423,8 +476,8 @@ These refactoring practices apply to **ALL** programming languages. The goal is 
 
 - **Improve variable names** — Rename unclear or abbreviated names to descriptive ones
 - **Improve function names** — Names should describe what the function does
-- **Consistent naming** — Follow language conventions throughout the codebase
-- **Domain terms** — Use consistent terminology from the problem domain
+- **Consistent naming**      — Follow language conventions throughout the codebase
+- **Domain terms**           — Use consistent terminology from the problem domain
 
 ---
 
@@ -448,10 +501,10 @@ These refactoring practices apply to **ALL** programming languages. The goal is 
 
 ## Performance Optimization
 
-- **Use efficient algorithms** — Choose appropriate data structures and algorithms
+- **Use efficient algorithms**     — Choose appropriate data structures and algorithms
 - **Avoid premature optimization** — Profile first, optimize bottlenecks
-- **Memory efficiency** — Use generators/iterators for large datasets
-- **Lazy evaluation** — Defer computation until needed
+- **Memory efficiency**            — Use generators/iterators for large datasets
+- **Lazy evaluation**              — Defer computation until needed
 
 ---
 
@@ -484,13 +537,11 @@ When reviewing code for refactoring opportunities, check for:
 
 ## Safe Refactoring
 
-1. **Ensure tests exist** before refactoring
-2. **Make small, incremental changes**
-3. **Verify behavior** after each change
-4. **Keep commits focused** — One refactoring per commit
+1. **Make small, incremental changes** - to isolate issues
+2. **Verify behavior**                 - after each change
+3. **Keep commits focused**            — one refactoring per commit
 
-
-
+---
 
 # Important
 > **Applies to:** All files (`*.*`)
