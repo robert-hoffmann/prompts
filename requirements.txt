@@ -1,0 +1,17 @@
+# ============================================================================
+# Requirements for Prompt System Test Files
+# ============================================================================
+# Install with: pip install -r ./requirements.txt
+#
+# These dependencies are used by the test files in ./tests/ which serve as
+# working mockups generated from our prompt templates.
+# ============================================================================
+
+# FastAPI — Modern async web framework for building APIs
+fastapi>=0.115.0
+
+# Pydantic — Data validation using Python type annotations
+pydantic>=2.10.0
+
+# Uvicorn — Lightning-fast ASGI server for running FastAPI
+uvicorn>=0.32.0

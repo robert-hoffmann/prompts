@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialPulse Dashboard</title>
+
+    <!-- ====================================================================
+         CDN Resources
+         ==================================================================== -->
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- ====================================================================
+         Custom Styles
+         ==================================================================== -->
+    <style>
+        /* ====================================================================
+           CSS Custom Properties
+           ==================================================================== */
+        :root {
+            --sp-transition-fast   : 150ms ease;
+            --sp-transition-normal : 300ms ease;
+            --sp-avatar-size       : 60px;
+            --sp-avatar-size-lg    : 100px;
+            --sp-sidebar-width     : 350px;
+        }
+
+        /* Dark mode custom overrides */
+        [data-bs-theme="dark"] {
+            --sp-bg-subtle : #1a1d21;
+        }
+
+        [data-bs-theme="light"] {
+            --sp-bg-subtle : #f8f9fa;
+        }
+
+        /* ====================================================================
+           Base Styles
+           ==================================================================== */
+        body {
+            min-height : 100vh;
+            transition : background-color var(--sp-transition-normal),
+                         color var(--sp-transition-normal);
+        }
+
+        /* ====================================================================
+           Layout Components
+           ==================================================================== */
+        .app-container {
+            min-height : 100vh;
+            display    : flex;
+            flex-direction : column;
+        }
+
+        .main-content {
+            flex       : 1;
+            display    : flex;
+            flex-direction : column;
+
+            @media (min-width: 992px) {
+                flex-direction : row;
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Search Panel (Left Sidebar)
+           -------------------------------------------------------------------- */
+        .search-panel {
+            width      : 100%;
+            border-right : 1px solid var(--bs-border-color);
+            background : var(--sp-bg-subtle);
+            display    : flex;
+            flex-direction : column;
+            max-height : 50vh;
+
+            @media (min-width: 992px) {
+                width      : var(--sp-sidebar-width);
+                min-width  : var(--sp-sidebar-width);
+                max-height : calc(100vh - 56px);
+                position   : sticky;
+                top        : 56px;
+            }
+        }
+
+        .search-results {
+            flex       : 1;
+            overflow-y : auto;
+            padding    : 1rem;
+        }
+
+        /* --------------------------------------------------------------------
+           Profile Panel (Main Area)
+           -------------------------------------------------------------------- */
+        .profile-panel {
+            flex    : 1;
+            padding : 1.5rem;
+
+            @media (min-width: 992px) {
+                max-height : calc(100vh - 56px);
+                overflow-y : auto;
+            }
+        }
+
+        /* ====================================================================
+           Component Styles
+           ==================================================================== */
+
+        /* --------------------------------------------------------------------
+           Health Indicator
+           -------------------------------------------------------------------- */
+        .health-indicator {
+            width         : 10px;
+            height        : 10px;
+            border-radius : 50%;
+            display       : inline-block;
+            transition    : background-color var(--sp-transition-fast);
+
+            &.online {
+                background-color : var(--bs-success);
+                box-shadow       : 0 0 8px var(--bs-success);
+            }
+
+            &.offline {
+                background-color : var(--bs-danger);
+                box-shadow       : 0 0 8px var(--bs-danger);
+            }
+
+            &.checking {
+                background-color : var(--bs-warning);
+                animation        : pulse 1s infinite;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%      { opacity: 0.5; }
+        }
+
+        /* --------------------------------------------------------------------
+           User Card
+           -------------------------------------------------------------------- */
+        .user-card {
+            cursor     : pointer;
+            transition : transform var(--sp-transition-fast),
+                         box-shadow var(--sp-transition-fast);
+
+            &:hover {
+                transform  : translateY(-2px);
+                box-shadow : var(--bs-box-shadow);
+            }
+
+            &:focus-visible {
+                outline        : 2px solid var(--bs-primary);
+                outline-offset : 2px;
+            }
+
+            &.active {
+                border-color : var(--bs-primary);
+                box-shadow   : 0 0 0 2px rgba(var(--bs-primary-rgb), 0.25);
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Avatar Styles
+           -------------------------------------------------------------------- */
+        .avatar {
+            width         : var(--sp-avatar-size);
+            height        : var(--sp-avatar-size);
+            border-radius : 50%;
+            object-fit    : cover;
+            background    : var(--bs-secondary-bg);
+            flex-shrink   : 0;
+        }
+
+        .avatar-lg {
+            --sp-avatar-size : var(--sp-avatar-size-lg);
+        }
+
+        .avatar-placeholder {
+            width           : var(--sp-avatar-size);
+            height          : var(--sp-avatar-size);
+            border-radius   : 50%;
+            background      : var(--bs-secondary-bg);
+            display         : flex;
+            align-items     : center;
+            justify-content : center;
+            flex-shrink     : 0;
+
+            i {
+                font-size : calc(var(--sp-avatar-size) * 0.5);
+                color     : var(--bs-secondary-color);
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Verified Badge
+           -------------------------------------------------------------------- */
+        .verified-badge {
+            color       : var(--bs-primary);
+            font-size   : 1rem;
+            margin-left : 0.25rem;
+        }
+
+        /* --------------------------------------------------------------------
+           Theme Toggle Button
+           -------------------------------------------------------------------- */
+        .theme-toggle {
+            border     : none;
+            background : transparent;
+            font-size  : 1.25rem;
+            padding    : 0.5rem;
+            cursor     : pointer;
+            transition : transform var(--sp-transition-fast);
+
+            &:hover {
+                transform : scale(1.1);
+            }
+
+            &:focus-visible {
+                outline        : 2px solid var(--bs-primary);
+                outline-offset : 2px;
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Empty State
+           -------------------------------------------------------------------- */
+        .empty-state {
+            text-align : center;
+            padding    : 3rem 1rem;
+            color      : var(--bs-secondary-color);
+
+            i {
+                font-size     : 3rem;
+                margin-bottom : 1rem;
+                display       : block;
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Tab Content Transitions
+           -------------------------------------------------------------------- */
+        .tab-pane {
+            animation : fadeIn var(--sp-transition-normal);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --------------------------------------------------------------------
+           Follower/Following List Items
+           -------------------------------------------------------------------- */
+        .connection-item {
+            transition : background-color var(--sp-transition-fast);
+
+            &:hover {
+                background-color : var(--bs-tertiary-bg);
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Profile Header
+           -------------------------------------------------------------------- */
+        .profile-header {
+            display     : flex;
+            gap         : 1.5rem;
+            align-items : flex-start;
+
+            @media (max-width: 576px) {
+                flex-direction : column;
+                align-items    : center;
+                text-align     : center;
+            }
+        }
+
+        /* --------------------------------------------------------------------
+           Stats Grid
+           -------------------------------------------------------------------- */
+        .stats-grid {
+            display               : grid;
+            grid-template-columns : repeat(2, 1fr);
+            gap                   : 1rem;
+            margin-top            : 1rem;
+
+            @media (min-width: 576px) {
+                grid-template-columns : repeat(4, 1fr);
+            }
+        }
+
+        .stat-item {
+            text-align : center;
+            padding    : 0.75rem;
+            background : var(--bs-tertiary-bg);
+            border-radius : var(--bs-border-radius);
+
+            .stat-value {
+                font-size   : 1.5rem;
+                font-weight : 600;
+                color       : var(--bs-emphasis-color);
+            }
+
+            .stat-label {
+                font-size : 0.875rem;
+                color     : var(--bs-secondary-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ====================================================================
+         Vue.js Application
+         ==================================================================== -->
+    <div id="app">
+        <div class="app-container">
+            <!-- ================================================================
+                 Navigation Header
+                 ================================================================ -->
+            <header class="navbar navbar-expand bg-body-tertiary border-bottom sticky-top">
+                <div class="container-fluid">
+                    <!-- Brand with Health Indicator -->
+                    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                        <span
+                            class="health-indicator"
+                            :class="{
+                                'online'   : healthStatus === 'ok',
+                                'offline'  : healthStatus === 'error',
+                                'checking' : healthStatus === 'checking'
+                            }"
+                            :title="healthStatusTitle"
+                            role="status"
+                            :aria-label="healthStatusTitle"
+                        ></span>
+                        <span class="fw-bold">SocialPulse</span>
+                    </a>
+
+                    <!-- Theme Toggle -->
+                    <button
+                        class="theme-toggle"
+                        type="button"
+                        :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+                        @click="toggleTheme"
+                    >
+                        <i :class="isDarkMode ? 'bi-sun-fill' : 'bi-moon-fill'" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ================================================================
+                 Main Content Area
+                 ================================================================ -->
+            <main class="main-content">
+                <!-- ============================================================
+                     Search Panel (Left Sidebar)
+                     ============================================================ -->
+                <aside class="search-panel" aria-label="User search">
+                    <!-- Search Input -->
+                    <div class="p-3 border-bottom">
+                        <div class="input-group">
+                            <span class="input-group-text" aria-hidden="true">
+                                <i class="bi-search"></i>
+                            </span>
+                            <input
+                                id="searchInput"
+                                class="form-control"
+                                v-model="searchQuery"
+                                type="search"
+                                placeholder="Search users..."
+                                aria-label="Search users"
+                                @input="handleSearchInput"
+                            >
+                            <button
+                                v-if="searchQuery"
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                aria-label="Clear search"
+                                @click="clearSearch"
+                            >
+                                <i class="bi-x-lg" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Search Results -->
+                    <div class="search-results" aria-live="polite">
+                        <!-- Loading State -->
+                        <div v-if="isSearching" class="text-center py-4" role="status">
+                            <div class="spinner-border text-primary" aria-hidden="true"></div>
+                            <span class="visually-hidden">Searching...</span>
+                        </div>
+
+                        <!-- Error State -->
+                        <div v-else-if="searchError" class="alert alert-danger" role="alert">
+                            <i class="bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                            {{ searchError }}
+                        </div>
+
+                        <!-- Results List -->
+                        <div v-else-if="searchResults.length > 0">
+                            <p class="text-secondary small mb-2">
+                                {{ searchTotal }} result{{ searchTotal !== 1 ? 's' : '' }} found
+                            </p>
+                            <div class="d-flex flex-column gap-2">
+                                <user-card
+                                    v-for="user in searchResults"
+                                    :key="user.user_id"
+                                    :user="user"
+                                    :is-active="selectedUserId === user.user_id"
+                                    @select="selectUser"
+                                ></user-card>
+                            </div>
+                            <!-- Load More Button -->
+                            <button
+                                v-if="hasMoreSearchResults"
+                                class="btn btn-outline-primary w-100 mt-3"
+                                :disabled="isLoadingMore"
+                                @click="loadMoreSearchResults"
+                            >
+                                <span v-if="isLoadingMore">
+                                    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                    Loading...
+                                </span>
+                                <span v-else>Load more</span>
+                            </button>
+                        </div>
+
+                        <!-- No Results -->
+                        <div v-else-if="searchQuery && !isSearching" class="empty-state">
+                            <i class="bi-search" aria-hidden="true"></i>
+                            <p class="mb-0">No users found for "{{ searchQuery }}"</p>
+                        </div>
+
+                        <!-- Initial State -->
+                        <div v-else class="empty-state">
+                            <i class="bi-people" aria-hidden="true"></i>
+                            <p class="mb-1">Search for users</p>
+                            <p class="small mb-0">Enter a name or username to get started</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- ============================================================
+                     Profile Panel (Main Area)
+                     ============================================================ -->
+                <section class="profile-panel" aria-label="User profile">
+                    <!-- Loading State -->
+                    <div v-if="isLoadingProfile" class="text-center py-5" role="status">
+                        <div class="spinner-border text-primary" aria-hidden="true"></div>
+                        <p class="mt-3 text-secondary">Loading profile...</p>
+                        <span class="visually-hidden">Loading user profile...</span>
+                    </div>
+
+                    <!-- Error State -->
+                    <div v-else-if="profileError" class="alert alert-danger" role="alert">
+                        <i class="bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                        {{ profileError }}
+                    </div>
+
+                    <!-- Profile Content -->
+                    <div v-else-if="userProfile">
+                        <!-- Profile Header -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="profile-header">
+                                    <!-- Avatar -->
+                                    <img
+                                        :src="getAvatarUrl(userProfile.user_id, userProfile.avatar_url, userProfile.display_name)"
+                                        :alt="userProfile.display_name + ' avatar'"
+                                        class="avatar avatar-lg"
+                                        @error="handleAvatarError"
+                                    >
+                                    <!-- User Info -->
+                                    <div class="flex-grow-1">
+                                        <h1 class="h3 mb-1 d-flex align-items-center flex-wrap gap-1">
+                                            {{ userProfile.display_name }}
+                                            <i
+                                                v-if="userProfile.is_verified"
+                                                class="bi-patch-check-fill verified-badge"
+                                                title="Verified account"
+                                                aria-label="Verified account"
+                                            ></i>
+                                        </h1>
+                                        <p class="text-secondary mb-2">@{{ userProfile.username }}</p>
+                                        <p v-if="userProfile.bio" class="mb-0">{{ userProfile.bio }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Stats Grid -->
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ formatNumber(userProfile.follower_count) }}</div>
+                                        <div class="stat-label">Followers</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ formatNumber(userProfile.following_count) }}</div>
+                                        <div class="stat-label">Following</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ userProfile.tags?.length || 0 }}</div>
+                                        <div class="stat-label">Interests</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">{{ formatDate(userProfile.created_at) }}</div>
+                                        <div class="stat-label">Joined</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Tabs -->
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button
+                                            class="nav-link"
+                                            :class="{ active: activeTab === 'about' }"
+                                            type="button"
+                                            role="tab"
+                                            :aria-selected="activeTab === 'about'"
+                                            @click="activeTab = 'about'"
+                                        >
+                                            <i class="bi-person me-1" aria-hidden="true"></i>
+                                            About
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button
+                                            class="nav-link"
+                                            :class="{ active: activeTab === 'followers' }"
+                                            type="button"
+                                            role="tab"
+                                            :aria-selected="activeTab === 'followers'"
+                                            @click="activeTab = 'followers'; loadFollowers()"
+                                        >
+                                            <i class="bi-people me-1" aria-hidden="true"></i>
+                                            Followers
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button
+                                            class="nav-link"
+                                            :class="{ active: activeTab === 'following' }"
+                                            type="button"
+                                            role="tab"
+                                            :aria-selected="activeTab === 'following'"
+                                            @click="activeTab = 'following'; loadFollowing()"
+                                        >
+                                            <i class="bi-person-plus me-1" aria-hidden="true"></i>
+                                            Following
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <!-- About Tab -->
+                                <div v-if="activeTab === 'about'" class="tab-pane" role="tabpanel">
+                                    <!-- Bio Section -->
+                                    <div class="mb-4">
+                                        <h2 class="h5 mb-3">
+                                            <i class="bi-chat-quote me-2" aria-hidden="true"></i>
+                                            Bio
+                                        </h2>
+                                        <p v-if="userProfile.bio" class="mb-0">{{ userProfile.bio }}</p>
+                                        <p v-else class="text-secondary mb-0 fst-italic">No bio provided</p>
+                                    </div>
+
+                                    <!-- Account Details -->
+                                    <div class="mb-4">
+                                        <h2 class="h5 mb-3">
+                                            <i class="bi-info-circle me-2" aria-hidden="true"></i>
+                                            Account Details
+                                        </h2>
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-4">Email</dt>
+                                            <dd class="col-sm-8">{{ userProfile.email }}</dd>
+
+                                            <dt class="col-sm-4">User ID</dt>
+                                            <dd class="col-sm-8">
+                                                <code>{{ userProfile.user_id }}</code>
+                                            </dd>
+
+                                            <dt class="col-sm-4">Verified</dt>
+                                            <dd class="col-sm-8">
+                                                <span v-if="userProfile.is_verified" class="badge bg-success">
+                                                    <i class="bi-check-lg me-1" aria-hidden="true"></i>
+                                                    Verified
+                                                </span>
+                                                <span v-else class="badge bg-secondary">Not verified</span>
+                                            </dd>
+
+                                            <dt class="col-sm-4">Member since</dt>
+                                            <dd class="col-sm-8">{{ formatFullDate(userProfile.created_at) }}</dd>
+                                        </dl>
+                                    </div>
+
+                                    <!-- Interest Tags -->
+                                    <div v-if="userProfile.tags && userProfile.tags.length > 0">
+                                        <h2 class="h5 mb-3">
+                                            <i class="bi-tags me-2" aria-hidden="true"></i>
+                                            Interests
+                                        </h2>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <span
+                                                v-for="tag in userProfile.tags"
+                                                :key="tag"
+                                                class="badge bg-primary-subtle text-primary-emphasis"
+                                            >
+                                                {{ tag }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Followers Tab -->
+                                <div v-else-if="activeTab === 'followers'" class="tab-pane" role="tabpanel">
+                                    <connection-list
+                                        :connections="followers"
+                                        :is-loading="isLoadingFollowers"
+                                        :error="followersError"
+                                        :has-more="hasMoreFollowers"
+                                        empty-message="No followers yet"
+                                        empty-icon="bi-people"
+                                        @load-more="loadMoreFollowers"
+                                        @select-user="selectUser"
+                                    ></connection-list>
+                                </div>
+
+                                <!-- Following Tab -->
+                                <div v-else-if="activeTab === 'following'" class="tab-pane" role="tabpanel">
+                                    <connection-list
+                                        :connections="following"
+                                        :is-loading="isLoadingFollowing"
+                                        :error="followingError"
+                                        :has-more="hasMoreFollowing"
+                                        empty-message="Not following anyone yet"
+                                        empty-icon="bi-person-plus"
+                                        @load-more="loadMoreFollowing"
+                                        @select-user="selectUser"
+                                    ></connection-list>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No Profile Selected State -->
+                    <div v-else class="empty-state h-100 d-flex flex-column align-items-center justify-content-center">
+                        <i class="bi-person-circle" aria-hidden="true"></i>
+                        <h2 class="h5 mb-2">Select a user</h2>
+                        <p class="text-secondary mb-0">Search for users and click on a profile to view details</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         Vue 3 Scripts
+         ==================================================================== -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ====================================================================
+        // Constants & Configuration
+        // ====================================================================
+        const API_BASE_URL    = 'http://localhost:8000';
+        const DEBOUNCE_DELAY  = 300;
+        const PAGE_LIMIT      = 20;
+        const HEALTH_INTERVAL = 30000; // Check health every 30 seconds
+
+        // ====================================================================
+        // Utility Functions
+        // ====================================================================
+
+        /**
+         * Debounce function - delays execution until after wait period.
+         *
+         * @param   {Function} fn   - Function to debounce
+         * @param   {number}   wait - Delay in milliseconds
+         * @returns {Function}      - Debounced function
+         */
+        function debounce(fn, wait) {
+            let timeout = null;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => fn.apply(this, args), wait);
+            };
+        }
+
+        /**
+         * Format a number with K/M suffixes for large numbers.
+         *
+         * @param   {number} num - Number to format
+         * @returns {string}     - Formatted number string
+         */
+        function formatNumber(num) {
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            }
+            return String(num);
+        }
+
+        /**
+         * Format date to short month/year format (e.g., "Dec 2024").
+         *
+         * @param   {string} dateStr - ISO date string
+         * @returns {string}         - Formatted date
+         */
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        }
+
+        /**
+         * Format date to full readable format (e.g., "December 13, 2024").
+         *
+         * @param   {string} dateStr - ISO date string
+         * @returns {string}         - Formatted date
+         */
+        function formatFullDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', {
+                month : 'long',
+                day   : 'numeric',
+                year  : 'numeric'
+            });
+        }
+
+        /**
+         * Get avatar URL with fallback to Picsum.
+         *
+         * @param   {string}      userId      - User's UUID
+         * @param   {string|null} avatarUrl   - User's avatar URL (may be null)
+         * @param   {string}      displayName - User's display name (for fallback)
+         * @returns {string}                  - Avatar image URL
+         */
+        function getAvatarUrl(userId, avatarUrl, displayName) {
+            // Use provided avatar URL if available
+            if (avatarUrl) return avatarUrl;
+            // Fallback to Picsum with user ID as seed for consistency
+            return `https://picsum.photos/seed/${userId}/100/100`;
+        }
+
+        /**
+         * Default avatar SVG as data URI.
+         */
+        const DEFAULT_AVATAR = `data:image/svg+xml,${encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="50" fill="#6c757d"/>
+                <circle cx="50" cy="35" r="18" fill="#fff"/>
+                <ellipse cx="50" cy="85" rx="30" ry="25" fill="#fff"/>
+            </svg>
+        `)}`;
+
+        // ====================================================================
+        // API Service
+        // ====================================================================
+
+        const api = {
+            /**
+             * Check API health status.
+             *
+             * @returns {Promise<boolean>} - True if API is healthy
+             */
+            async checkHealth() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/health`);
+                    const data     = await response.json();
+                    return data.status === 'ok';
+                } catch (error) {
+                    console.error('Health check failed:', error);
+                    return false;
+                }
+            },
+
+            /**
+             * Search users by query string.
+             *
+             * @param   {string} query - Search query
+             * @param   {number} page  - Page number (1-based)
+             * @param   {number} limit - Results per page
+             * @returns {Promise<Object>} - SearchResult object
+             */
+            async searchUsers(query, page = 1, limit = PAGE_LIMIT) {
+                const params   = new URLSearchParams({ q: query, page, limit });
+                const response = await fetch(`${API_BASE_URL}/search?${params}`);
+                if (!response.ok) {
+                    throw new Error(`Search failed: ${response.statusText}`);
+                }
+                return response.json();
+            },
+
+            /**
+             * Get user profile by ID.
+             *
+             * @param   {string} userId - User UUID
+             * @returns {Promise<Object>} - UserProfile object
+             */
+            async getUser(userId) {
+                const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+                if (response.status === 404) {
+                    throw new Error('User not found');
+                }
+                if (!response.ok) {
+                    throw new Error(`Failed to load profile: ${response.statusText}`);
+                }
+                return response.json();
+            },
+
+            /**
+             * Get user's followers.
+             *
+             * @param   {string} userId - User UUID
+             * @param   {number} page   - Page number
+             * @param   {number} limit  - Results per page
+             * @returns {Promise<Array>} - Array of FollowConnection objects
+             */
+            async getFollowers(userId, page = 1, limit = PAGE_LIMIT) {
+                const params   = new URLSearchParams({ page, limit });
+                const response = await fetch(`${API_BASE_URL}/users/${userId}/followers?${params}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load followers: ${response.statusText}`);
+                }
+                return response.json();
+            },
+
+            /**
+             * Get users that this user is following.
+             *
+             * @param   {string} userId - User UUID
+             * @param   {number} page   - Page number
+             * @param   {number} limit  - Results per page
+             * @returns {Promise<Array>} - Array of FollowConnection objects
+             */
+            async getFollowing(userId, page = 1, limit = PAGE_LIMIT) {
+                const params   = new URLSearchParams({ page, limit });
+                const response = await fetch(`${API_BASE_URL}/users/${userId}/following?${params}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load following: ${response.statusText}`);
+                }
+                return response.json();
+            }
+        };
+
+        // ====================================================================
+        // Vue.js Application
+        // ====================================================================
+        const { createApp, ref, computed, watch, onMounted, onUnmounted } = Vue;
+
+        // --------------------------------------------------------------------
+        // User Card Component
+        // --------------------------------------------------------------------
+        const UserCard = {
+            name  : 'UserCard',
+            props : {
+                user     : { type: Object, required: true },
+                isActive : { type: Boolean, default: false }
+            },
+            emits : ['select'],
+            setup(props, { emit }) {
+                /**
+                 * Handle avatar load error - fallback to default.
+                 */
+                function handleAvatarError(event) {
+                    event.target.src = DEFAULT_AVATAR;
+                }
+
+                /**
+                 * Handle card selection.
+                 */
+                function handleSelect() {
+                    emit('select', props.user);
+                }
+
+                return {
+                    handleAvatarError,
+                    handleSelect,
+                    getAvatarUrl
+                };
+            },
+            template: `
+                <article
+                    class="card user-card"
+                    :class="{ active: isActive }"
+                    role="button"
+                    tabindex="0"
+                    :aria-label="'View profile of ' + user.display_name"
+                    @click="handleSelect"
+                    @keydown.enter="handleSelect"
+                    @keydown.space.prevent="handleSelect"
+                >
+                    <div class="card-body d-flex align-items-center gap-3 py-2">
+                        <img
+                            :src="getAvatarUrl(user.user_id, user.avatar_url, user.display_name)"
+                            :alt="user.display_name + ' avatar'"
+                            class="avatar"
+                            style="--sp-avatar-size: 48px"
+                            @error="handleAvatarError"
+                        >
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="fw-semibold text-truncate">{{ user.display_name }}</span>
+                                <i
+                                    v-if="user.is_verified"
+                                    class="bi-patch-check-fill verified-badge"
+                                    title="Verified account"
+                                    aria-label="Verified"
+                                ></i>
+                            </div>
+                            <div class="text-secondary small text-truncate">@{{ user.username }}</div>
+                        </div>
+                        <i class="bi-chevron-right text-secondary" aria-hidden="true"></i>
+                    </div>
+                </article>
+            `
+        };
+
+        // --------------------------------------------------------------------
+        // Connection List Component (for Followers/Following)
+        // --------------------------------------------------------------------
+        const ConnectionList = {
+            name  : 'ConnectionList',
+            props : {
+                connections  : { type: Array,   default: () => [] },
+                isLoading    : { type: Boolean, default: false },
+                error        : { type: String,  default: null },
+                hasMore      : { type: Boolean, default: false },
+                emptyMessage : { type: String,  default: 'No connections' },
+                emptyIcon    : { type: String,  default: 'bi-people' }
+            },
+            emits : ['load-more', 'select-user'],
+            setup(props, { emit }) {
+                const isLoadingMore = ref(false);
+
+                /**
+                 * Handle avatar load error.
+                 */
+                function handleAvatarError(event) {
+                    event.target.src = DEFAULT_AVATAR;
+                }
+
+                /**
+                 * Load more connections.
+                 */
+                async function loadMore() {
+                    isLoadingMore.value = true;
+                    emit('load-more');
+                    // Note: Parent will handle the async operation
+                    // Loading state is controlled by parent's isLoading prop
+                }
+
+                /**
+                 * Select a user from the connection list.
+                 */
+                function selectUser(connection) {
+                    emit('select-user', { user_id: connection.connection_id });
+                }
+
+                return {
+                    isLoadingMore,
+                    handleAvatarError,
+                    loadMore,
+                    selectUser,
+                    getAvatarUrl,
+                    formatDate
+                };
+            },
+            template: `
+                <div>
+                    <!-- Loading State -->
+                    <div v-if="isLoading && connections.length === 0" class="text-center py-4" role="status">
+                        <div class="spinner-border text-primary" aria-hidden="true"></div>
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+
+                    <!-- Error State -->
+                    <div v-else-if="error" class="alert alert-danger" role="alert">
+                        <i class="bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+                        {{ error }}
+                    </div>
+
+                    <!-- Connection List -->
+                    <div v-else-if="connections.length > 0">
+                        <ul class="list-group list-group-flush">
+                            <li
+                                v-for="conn in connections"
+                                :key="conn.connection_id"
+                                class="list-group-item connection-item d-flex align-items-center gap-3 px-0"
+                                role="button"
+                                tabindex="0"
+                                @click="selectUser(conn)"
+                                @keydown.enter="selectUser(conn)"
+                            >
+                                <img
+                                    :src="getAvatarUrl(conn.connection_id, null, '')"
+                                    alt="User avatar"
+                                    class="avatar"
+                                    style="--sp-avatar-size: 40px"
+                                    @error="handleAvatarError"
+                                >
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium">User</div>
+                                    <div class="text-secondary small">
+                                        Since {{ formatDate(conn.since) }}
+                                    </div>
+                                </div>
+                                <i class="bi-chevron-right text-secondary" aria-hidden="true"></i>
+                            </li>
+                        </ul>
+
+                        <!-- Load More Button -->
+                        <button
+                            v-if="hasMore"
+                            class="btn btn-outline-primary w-100 mt-3"
+                            :disabled="isLoading"
+                            @click="loadMore"
+                        >
+                            <span v-if="isLoading">
+                                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                Loading...
+                            </span>
+                            <span v-else>Load more</span>
+                        </button>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div v-else class="empty-state">
+                        <i :class="emptyIcon" aria-hidden="true"></i>
+                        <p class="mb-0">{{ emptyMessage }}</p>
+                    </div>
+                </div>
+            `
+        };
+
+        // --------------------------------------------------------------------
+        // Main Application
+        // --------------------------------------------------------------------
+        const app = createApp({
+            components : {
+                UserCard,
+                ConnectionList
+            },
+            setup() {
+                // ============================================================
+                // Theme State
+                // ============================================================
+                const isDarkMode = ref(false);
+
+                /**
+                 * Toggle between light and dark theme.
+                 */
+                function toggleTheme() {
+                    isDarkMode.value = !isDarkMode.value;
+                    document.documentElement.setAttribute(
+                        'data-bs-theme',
+                        isDarkMode.value ? 'dark' : 'light'
+                    );
+                    // Persist preference
+                    localStorage.setItem('theme', isDarkMode.value ? 'dark' : 'light');
+                }
+
+                /**
+                 * Initialize theme from saved preference or system preference.
+                 */
+                function initTheme() {
+                    const saved = localStorage.getItem('theme');
+                    if (saved) {
+                        isDarkMode.value = saved === 'dark';
+                    } else {
+                        isDarkMode.value = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    }
+                    document.documentElement.setAttribute(
+                        'data-bs-theme',
+                        isDarkMode.value ? 'dark' : 'light'
+                    );
+                }
+
+                // ============================================================
+                // Health Status
+                // ============================================================
+                const healthStatus = ref('checking'); // 'checking' | 'ok' | 'error'
+                let healthInterval = null;
+
+                const healthStatusTitle = computed(() => {
+                    switch (healthStatus.value) {
+                        case 'ok'       : return 'API is online';
+                        case 'error'    : return 'API is offline';
+                        case 'checking' : return 'Checking API status...';
+                        default         : return 'Unknown status';
+                    }
+                });
+
+                /**
+                 * Check API health and update status.
+                 */
+                async function checkHealth() {
+                    try {
+                        const isHealthy  = await api.checkHealth();
+                        healthStatus.value = isHealthy ? 'ok' : 'error';
+                    } catch {
+                        healthStatus.value = 'error';
+                    }
+                }
+
+                // ============================================================
+                // Search State
+                // ============================================================
+                const searchQuery       = ref('');
+                const searchResults     = ref([]);
+                const searchTotal       = ref(0);
+                const searchPage        = ref(1);
+                const isSearching       = ref(false);
+                const isLoadingMore     = ref(false);
+                const searchError       = ref(null);
+
+                const hasMoreSearchResults = computed(() => {
+                    return searchResults.value.length < searchTotal.value;
+                });
+
+                /**
+                 * Debounced search function.
+                 */
+                const debouncedSearch = debounce(async () => {
+                    if (!searchQuery.value.trim()) {
+                        searchResults.value = [];
+                        searchTotal.value   = 0;
+                        searchPage.value    = 1;
+                        searchError.value   = null;
+                        return;
+                    }
+
+                    isSearching.value = true;
+                    searchError.value = null;
+                    searchPage.value  = 1;
+
+                    try {
+                        const result        = await api.searchUsers(searchQuery.value, 1);
+                        searchResults.value = result.users || [];
+                        searchTotal.value   = result.total || 0;
+                    } catch (error) {
+                        searchError.value   = error.message || 'Search failed';
+                        searchResults.value = [];
+                        searchTotal.value   = 0;
+                    } finally {
+                        isSearching.value = false;
+                    }
+                }, DEBOUNCE_DELAY);
+
+                /**
+                 * Handle search input event.
+                 */
+                function handleSearchInput() {
+                    debouncedSearch();
+                }
+
+                /**
+                 * Clear search query and results.
+                 */
+                function clearSearch() {
+                    searchQuery.value   = '';
+                    searchResults.value = [];
+                    searchTotal.value   = 0;
+                    searchPage.value    = 1;
+                    searchError.value   = null;
+                }
+
+                /**
+                 * Load more search results (pagination).
+                 */
+                async function loadMoreSearchResults() {
+                    if (isLoadingMore.value || !hasMoreSearchResults.value) return;
+
+                    isLoadingMore.value = true;
+                    try {
+                        const nextPage      = searchPage.value + 1;
+                        const result        = await api.searchUsers(searchQuery.value, nextPage);
+                        searchResults.value = [...searchResults.value, ...(result.users || [])];
+                        searchPage.value    = nextPage;
+                    } catch (error) {
+                        searchError.value = error.message || 'Failed to load more results';
+                    } finally {
+                        isLoadingMore.value = false;
+                    }
+                }
+
+                // ============================================================
+                // Profile State
+                // ============================================================
+                const selectedUserId   = ref(null);
+                const userProfile      = ref(null);
+                const isLoadingProfile = ref(false);
+                const profileError     = ref(null);
+                const activeTab        = ref('about');
+
+                // Followers state
+                const followers          = ref([]);
+                const followersPage      = ref(1);
+                const isLoadingFollowers = ref(false);
+                const followersError     = ref(null);
+                const hasMoreFollowers   = ref(true);
+
+                // Following state
+                const following          = ref([]);
+                const followingPage      = ref(1);
+                const isLoadingFollowing = ref(false);
+                const followingError     = ref(null);
+                const hasMoreFollowing   = ref(true);
+
+                /**
+                 * Select and load a user profile.
+                 */
+                async function selectUser(user) {
+                    const userId = user.user_id;
+                    if (selectedUserId.value === userId) return;
+
+                    selectedUserId.value   = userId;
+                    isLoadingProfile.value = true;
+                    profileError.value     = null;
+                    activeTab.value        = 'about';
+
+                    // Reset followers/following state
+                    followers.value        = [];
+                    followersPage.value    = 1;
+                    hasMoreFollowers.value = true;
+                    followersError.value   = null;
+
+                    following.value        = [];
+                    followingPage.value    = 1;
+                    hasMoreFollowing.value = true;
+                    followingError.value   = null;
+
+                    try {
+                        userProfile.value = await api.getUser(userId);
+                    } catch (error) {
+                        profileError.value = error.message || 'Failed to load profile';
+                        userProfile.value  = null;
+                    } finally {
+                        isLoadingProfile.value = false;
+                    }
+                }
+
+                /**
+                 * Load followers for current user.
+                 */
+                async function loadFollowers() {
+                    if (!selectedUserId.value || isLoadingFollowers.value) return;
+                    if (followers.value.length > 0) return; // Already loaded
+
+                    isLoadingFollowers.value = true;
+                    followersError.value     = null;
+
+                    try {
+                        const result         = await api.getFollowers(selectedUserId.value, 1);
+                        followers.value      = result || [];
+                        followersPage.value  = 1;
+                        hasMoreFollowers.value = result.length >= PAGE_LIMIT;
+                    } catch (error) {
+                        followersError.value = error.message || 'Failed to load followers';
+                    } finally {
+                        isLoadingFollowers.value = false;
+                    }
+                }
+
+                /**
+                 * Load more followers (pagination).
+                 */
+                async function loadMoreFollowers() {
+                    if (!selectedUserId.value || isLoadingFollowers.value || !hasMoreFollowers.value) return;
+
+                    isLoadingFollowers.value = true;
+                    try {
+                        const nextPage       = followersPage.value + 1;
+                        const result         = await api.getFollowers(selectedUserId.value, nextPage);
+                        followers.value      = [...followers.value, ...(result || [])];
+                        followersPage.value  = nextPage;
+                        hasMoreFollowers.value = result.length >= PAGE_LIMIT;
+                    } catch (error) {
+                        followersError.value = error.message || 'Failed to load more followers';
+                    } finally {
+                        isLoadingFollowers.value = false;
+                    }
+                }
+
+                /**
+                 * Load following for current user.
+                 */
+                async function loadFollowing() {
+                    if (!selectedUserId.value || isLoadingFollowing.value) return;
+                    if (following.value.length > 0) return; // Already loaded
+
+                    isLoadingFollowing.value = true;
+                    followingError.value     = null;
+
+                    try {
+                        const result         = await api.getFollowing(selectedUserId.value, 1);
+                        following.value      = result || [];
+                        followingPage.value  = 1;
+                        hasMoreFollowing.value = result.length >= PAGE_LIMIT;
+                    } catch (error) {
+                        followingError.value = error.message || 'Failed to load following';
+                    } finally {
+                        isLoadingFollowing.value = false;
+                    }
+                }
+
+                /**
+                 * Load more following (pagination).
+                 */
+                async function loadMoreFollowing() {
+                    if (!selectedUserId.value || isLoadingFollowing.value || !hasMoreFollowing.value) return;
+
+                    isLoadingFollowing.value = true;
+                    try {
+                        const nextPage       = followingPage.value + 1;
+                        const result         = await api.getFollowing(selectedUserId.value, nextPage);
+                        following.value      = [...following.value, ...(result || [])];
+                        followingPage.value  = nextPage;
+                        hasMoreFollowing.value = result.length >= PAGE_LIMIT;
+                    } catch (error) {
+                        followingError.value = error.message || 'Failed to load more following';
+                    } finally {
+                        isLoadingFollowing.value = false;
+                    }
+                }
+
+                /**
+                 * Handle avatar error - fallback to default.
+                 */
+                function handleAvatarError(event) {
+                    event.target.src = DEFAULT_AVATAR;
+                }
+
+                // ============================================================
+                // Lifecycle
+                // ============================================================
+                onMounted(() => {
+                    // Initialize theme
+                    initTheme();
+
+                    // Initial health check
+                    checkHealth();
+
+                    // Set up periodic health checks
+                    healthInterval = setInterval(checkHealth, HEALTH_INTERVAL);
+                });
+
+                onUnmounted(() => {
+                    // Clean up health check interval
+                    if (healthInterval) {
+                        clearInterval(healthInterval);
+                    }
+                });
+
+                // ============================================================
+                // Return Template Bindings
+                // ============================================================
+                return {
+                    // Theme
+                    isDarkMode,
+                    toggleTheme,
+
+                    // Health
+                    healthStatus,
+                    healthStatusTitle,
+
+                    // Search
+                    searchQuery,
+                    searchResults,
+                    searchTotal,
+                    isSearching,
+                    isLoadingMore,
+                    searchError,
+                    hasMoreSearchResults,
+                    handleSearchInput,
+                    clearSearch,
+                    loadMoreSearchResults,
+
+                    // Profile
+                    selectedUserId,
+                    userProfile,
+                    isLoadingProfile,
+                    profileError,
+                    activeTab,
+                    selectUser,
+                    handleAvatarError,
+
+                    // Followers
+                    followers,
+                    isLoadingFollowers,
+                    followersError,
+                    hasMoreFollowers,
+                    loadFollowers,
+                    loadMoreFollowers,
+
+                    // Following
+                    following,
+                    isLoadingFollowing,
+                    followingError,
+                    hasMoreFollowing,
+                    loadFollowing,
+                    loadMoreFollowing,
+
+                    // Utilities
+                    formatNumber,
+                    formatDate,
+                    formatFullDate,
+                    getAvatarUrl
+                };
+            }
+        });
+
+        // Mount the application
+        app.mount('#app');
+    </script>
+</body>
+</html>

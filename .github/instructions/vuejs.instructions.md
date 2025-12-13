@@ -2,647 +2,530 @@
 applyTo: "*.html,*.css,*.vue"
 ---
 
-# Modern Web Development Standards
+# Web Development Standards (Vue.js 3 + CSS3 + Bootstrap 5.3+)
 
-You are an expert in modern web development specializing in HTML5, Vue.js 3, CSS3, and Bootstrap 5.3+.
+> **CRITICAL: Use MODERN Web Technologies**
+>
+> Most AI models are trained on legacy patterns. This file enforces modern idioms.
+> When in doubt, prefer the newest syntax and features over deprecated patterns.
 
-## Core Technologies
+## Platform & Environment
 
-- **HTML5**          : Semantic markup, accessibility (ARIA), modern APIs
-- **Vue.js 3**       : Composition API, reactive data, component architecture
-- **CSS3**           : Modern features including nesting, custom properties, container queries
-- **Bootstrap 5.3+** : Utility classes, component customization, dark mode support
-
----
-
-## Focus Areas
-
-- Clean, semantic HTML5 markup
-- Modern CSS features (nesting, custom properties, container queries)
-- Vue.js 3 Composition API patterns
-- Accessibility (ARIA) compliance
-- Responsive, mobile-first design
-- Performance and maintainability
+- **HTML5**          : Semantic markup, modern APIs, ARIA accessibility
+- **CSS3**           : Native nesting, container queries, `:has()`, custom properties
+- **Vue.js 3.4+**    : Composition API, `<script setup>`, defineModel, typed props
+- **Bootstrap 5.3+** : CSS variables, `data-bs-theme`, utility API
 
 ---
 
-## CSS Organization & Architecture
+# CSS3 — MODERN FEATURES REQUIRED
 
-### CSS Nesting (Modern Syntax)
+> **Stop using preprocessors for features CSS now handles natively!**
+>
+> Native CSS nesting, custom properties, and container queries are widely supported.
 
-- **ALWAYS use modern CSS nesting** for better organization and readability
-- Nest related selectors logically to mirror HTML structure
-- Use `&` for pseudo-classes, pseudo-elements, and modifier classes
-- Keep nesting depth reasonable (max 3-4 levels) for maintainability
+## Native CSS Nesting (REQUIRED)
 
 ```css
-/* ✅ GOOD - Modern CSS Nesting */
+/* ✅ MODERN — Native CSS Nesting */
 .card {
     padding       : 1rem;
-    border-radius : 8px;
+    border-radius : var(--bs-border-radius);
 
+    /* Pseudo-classes with & */
     &:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow : var(--bs-box-shadow);
     }
 
+    /* Nested selectors */
     .card-header {
-        font-weight   : bold;
-        margin-bottom : 0.5rem;
+        font-weight : 600;
 
         &.primary {
-            color: var(--bs-primary);
+            color : var(--bs-primary);
         }
     }
 
-    .card-body {
-        line-height: 1.6;
-
-        p {
-            margin-bottom: 1rem;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-    }
-}
-
-/* ✅ GOOD - Media queries nested */
-.container {
-    padding: 1rem;
-
+    /* Nested media queries */
     @media (min-width: 768px) {
-        padding: 2rem;
-    }
-
-    @media (min-width: 1200px) {
-        padding   : 3rem;
-        max-width : 1140px;
+        padding : 2rem;
     }
 }
 ```
 
-### CSS Property Ordering
-
-Within each rule, order properties logically:
-
-1. **Layout**     (display, position, top/right/bottom/left, z-index)
-2. **Box Model**  (width, height, margin, padding, border)
-3. **Typography** (font-*, line-height, text-*, letter-spacing)
-4. **Visual**     (background, color, box-shadow, opacity)
-5. **Animation**  (transition, animation, transform)
+## Container Queries (REQUIRED for Component-Based Design)
 
 ```css
-.example {
-    /* Layout */
-    display  : flex;
-    position : relative;
-    z-index  : 10;
-
-    /* Box Model */
-    width         : 100%;
-    max-width     : 1200px;
-    margin        : 0 auto;
-    padding       : 2rem;
-    border        : 1px solid var(--bs-border-color);
-    border-radius : var(--border-radius);
-
-    /* Typography */
-    font-size   : 1rem;
-    font-weight : 400;
-    line-height : 1.6;
-    text-align  : center;
-
-    /* Visual */
-    background : var(--bs-body-bg);
-    color      : var(--bs-body-color);
-    box-shadow : 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    /* Animation */
-    transition: all 0.3s ease;
-}
-```
-
-### CSS Custom Properties (Variables)
-
-```css
-:root {
-    /* Color palette */
-    --primary-color   : #0d6efd;
-    --secondary-color : #6c757d;
-    --success-color   : #198754;
-    --danger-color    : #dc3545;
-
-    /* Spacing */
-    --spacing-xs : 0.25rem;
-    --spacing-sm : 0.5rem;
-    --spacing-md : 1rem;
-    --spacing-lg : 2rem;
-
-    /* Transitions */
-    --transition-fast   : 0.15s;
-    --transition-normal : 0.3s;
-    --transition-slow   : 0.5s;
-
-    /* Border radius */
-    --border-radius: 8px;
-}
-
-.component {
-    padding    : var(--spacing-md);
-    color      : var(--primary-color);
-    transition : all var(--transition-normal) ease;
-}
-```
-
----
-
-## CSS Structure Example
-
-```css
-/* ============================================================================
-   GLOBAL VARIABLES & CUSTOM PROPERTIES
-   ============================================================================ */
-
-:root {
-    --primary-color   : #0d6efd;
-    --secondary-color : #6c757d;
-    --border-radius   : 8px;
-    --transition-speed: 0.3s;
-}
-
-/* ============================================================================
-   NAVIGATION & HEADER
-   ============================================================================ */
-
-.navbar {
-    padding    : 1rem;
-    background : var(--primary-color);
-
-    .navbar-brand {
-        display     : flex;
-        align-items : center;
-        gap         : 0.5rem;
-        font-weight : bold;
-
-        &:hover {
-            opacity: 0.9;
-        }
-    }
-
-    .navbar-nav {
-        display : flex;
-        gap     : 1rem;
-
-        .nav-item {
-            position: relative;
-
-            &.active .nav-link {
-                color            : white;
-                background-color : rgba(255, 255, 255, 0.1);
-            }
-        }
-    }
-}
-
-/* ============================================================================
-   FORMS & INPUTS
-   ============================================================================ */
-
-.form-control {
-    border-radius : var(--border-radius);
-    transition    : all var(--transition-speed) ease;
-
-    &:focus {
-        border-color : var(--primary-color);
-        box-shadow   : 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    }
-
-    &.is-invalid {
-        border-color: var(--bs-danger);
-
-        &:focus {
-            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-        }
-    }
-}
-
-/* ============================================================================
-   TABLES & DATA DISPLAY
-   ============================================================================ */
-
-.table {
-    border-collapse : separate;
-    border-spacing  : 0;
-
-    thead {
-        background : var(--bs-light);
-        position   : sticky;
-        top        : 0;
-        z-index    : 10;
-
-        th {
-            font-weight   : 600;
-            border-bottom : 2px solid var(--bs-border-color);
-            padding       : 0.75rem 1rem;
-
-            &.sortable {
-                cursor: pointer;
-
-                &:hover {
-                    background: var(--bs-secondary-bg);
-                }
-            }
-        }
-    }
-
-    tbody tr {
-        transition: background-color 0.2s ease;
-
-        &:hover {
-            background-color: var(--bs-light);
-        }
-
-        &.selected {
-            background-color: var(--bs-primary-bg-subtle);
-        }
-
-        td {
-            padding        : 0.75rem 1rem;
-            vertical-align : middle;
-        }
-    }
-}
-
-/* ============================================================================
-   DARK MODE OVERRIDES
-   ============================================================================ */
-
-[data-bs-theme="dark"] {
-    .navbar {
-        background: var(--bs-dark);
-
-        .navbar-brand {
-            color: var(--bs-light);
-        }
-    }
-
-    .table thead {
-        background: var(--bs-dark);
-
-        th {
-            border-color : var(--bs-border-color);
-            color        : var(--bs-light);
-        }
-    }
-
-    .table tbody tr:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-}
-```
-
----
-
-## Modern CSS Features to Leverage
-
-### Container Queries
-
-```css
+/* Container queries — responsive to parent, not viewport */
 .card-container {
     container-type : inline-size;
     container-name : card;
+}
 
-    .card {
-        padding: 1rem;
+.card {
+    padding: 1rem;
 
-        @container card (min-width: 400px) {
-            display               : grid;
-            grid-template-columns : 1fr 2fr;
-            gap                   : 2rem;
-        }
+    @container card (min-width: 400px) {
+        display               : grid;
+        grid-template-columns : 1fr 2fr;
+        gap                   : 1rem;
+    }
+
+    @container card (min-width: 600px) {
+        grid-template-columns : 1fr 3fr;
     }
 }
 ```
 
-### Modern Selectors
+## Modern Selectors
+
+| Selector | Purpose | Example |
+|----------|---------|---------|
+| `:has()` | Parent selection | `.form-group:has(.is-invalid)` |
+| `:is()`  | Grouping (full specificity) | `:is(h1, h2, h3) { margin-top: 0; }` |
+| `:where()` | Grouping (zero specificity) | `:where(.btn) { cursor: pointer; }` |
+| `:focus-visible` | Keyboard focus only | `button:focus-visible { outline: 2px solid; }` |
 
 ```css
-/* :is() for grouping */
-:is(h1, h2, h3, h4, h5, h6) {
-    font-weight : 600;
-    line-height : 1.2;
-    margin-top  : 0;
-}
-
-/* :where() for zero-specificity */
-:where(.btn) {
-    padding       : 0.5rem 1rem;
-    border-radius : 0.25rem;
-}
-
-/* :has() for parent selection */
+/* :has() for parent selection — game changer */
 .form-group:has(.is-invalid) {
-    border-left: 3px solid var(--bs-danger);
+    border-left : 3px solid var(--bs-danger);
+}
+
+.card:has(> img:first-child) {
+    padding-top : 0;
+}
+
+/* :focus-visible for keyboard-only focus styles */
+.btn:focus-visible {
+    outline        : 2px solid var(--bs-primary);
+    outline-offset : 2px;
 }
 ```
+
+## CSS Layers (@layer)
+
+```css
+/* Define layer order — later layers override earlier */
+@layer reset, base, components, utilities;
+
+@layer reset {
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+}
+
+@layer components {
+    .card {
+        /* Component styles */
+    }
+}
+
+@layer utilities {
+    .visually-hidden {
+        position : absolute;
+        width    : 1px;
+        height   : 1px;
+        clip     : rect(0, 0, 0, 0);
+    }
+}
+```
+
+## CSS Property Ordering
+
+Order properties logically within each rule:
+
+1. **Layout**     — `display`, `position`, `grid-*`, `flex-*`, `z-index`
+2. **Box Model**  — `width`, `height`, `margin`, `padding`, `border`
+3. **Typography** — `font-*`, `line-height`, `text-*`
+4. **Visual**     — `background`, `color`, `box-shadow`, `opacity`
+5. **Animation**  — `transition`, `animation`, `transform`
 
 ---
 
-## HTML5 Best Practices
+# Bootstrap 5.3+ — MODERN PATTERNS
 
-### Semantic Markup
+> **Bootstrap 5.3+ uses CSS custom properties extensively.**
+> Customize via CSS variables, not Sass overrides when possible.
 
-Use appropriate semantic elements for better accessibility and SEO:
+## Bootstrap CSS Variables
 
-```html
-<!-- ✅ GOOD - Semantic HTML -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">App Name</a>
-        <button class="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</nav>
+```css
+/* Override Bootstrap variables at :root or component level */
+:root {
+    --bs-primary       : #0d6efd;
+    --bs-body-bg       : #f8f9fa;
+    --bs-border-radius : 0.5rem;
+}
 
-<main class="container">
-    <section class="data-section">
-        <header>
-            <h1>Dashboard</h1>
-            <p class="lead">Overview of your data</p>
-        </header>
-
-        <article class="data-table">
-            <!-- Table content -->
-        </article>
-    </section>
-</main>
-
-<footer class="bg-dark text-light py-3">
-    <div class="container">
-        <p>&copy; 2025 Company Name</p>
-    </div>
-</footer>
+/* Component-level overrides */
+.card {
+    --bs-card-border-radius : 1rem;
+    --bs-card-spacer-y      : 1.5rem;
+    --bs-card-spacer-x      : 1.5rem;
+}
 ```
 
-### HTML Attribute Ordering
+## Dark Mode (data-bs-theme)
 
-Use proper attribute ordering for consistency:
+```html
+<!-- Toggle at root or any container -->
+<html :data-bs-theme="darkMode ? 'dark' : 'light'">
+
+<!-- Or scope to specific components -->
+<div data-bs-theme="dark" class="p-4">
+    <!-- Dark mode content -->
+</div>
+```
+
+```css
+/* Custom dark mode overrides */
+[data-bs-theme="dark"] {
+    --custom-bg     : #1a1a2e;
+    --custom-text   : #eaeaea;
+
+    .custom-component {
+        background : var(--custom-bg);
+        color      : var(--custom-text);
+    }
+}
+```
+
+## Bootstrap 5.3+ Features to Leverage
+
+| Feature | Description |
+|---------|-------------|
+| `data-bs-theme` | Native dark/light mode switching |
+| CSS Variables   | Runtime theming without recompilation |
+| Color modes     | Automatic component adaptation |
+| Utility API     | Extend utilities via Sass (when needed) |
+| `color-mix()`   | Dynamic color adjustments |
+
+---
+
+# Vue.js 3.4+ — MODERN PATTERNS
+
+> **Use Composition API with `<script setup>` exclusively.**
+> Options API is legacy — Composition API is more type-safe and performant.
+
+## Modern Component Structure
+
+```vue
+<script setup lang="ts">
+/**
+ * UserCard component displays user information with actions.
+ *
+ * @component
+ */
+
+// ============================================================================
+// Imports
+// ============================================================================
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'; // Vue reactivity
+import { useRouter }                                    from 'vue-router'; // Router composable
+
+import type { User } from '@/types'; // Type imports
+
+// ============================================================================
+// Props & Emits (Typed)
+// ============================================================================
+
+interface Props {
+    user         : User;
+    showActions? : boolean;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    showActions: true
+});
+
+const emit = defineEmits<{
+    update : [user: User];
+    delete : [id: string];
+}>();
+
+// ============================================================================
+// Reactive State
+// ============================================================================
+const isLoading  = ref(false);
+const isExpanded = ref(false);
+
+// ============================================================================
+// Computed Properties
+// ============================================================================
+const fullName = computed(() => `${props.user.firstName} ${props.user.lastName}`);
+
+const userInitials = computed(() =>
+    `${props.user.firstName[0]}${props.user.lastName[0]}`.toUpperCase()
+);
+
+// ============================================================================
+// Methods
+// ============================================================================
+
+/**
+ * Handle user update action.
+ */
+async function handleUpdate(): Promise<void> {
+    isLoading.value = true;
+    try {
+        // API call here
+        emit('update', props.user);
+    } finally {
+        isLoading.value = false;
+    }
+}
+
+// ============================================================================
+// Lifecycle
+// ============================================================================
+onMounted(() => {
+    // Setup code
+});
+
+onUnmounted(() => {
+    // Cleanup code
+});
+</script>
+
+<template>
+    <article class="card">
+        <header class="card-header">
+            <h3>{{ fullName }}</h3>
+        </header>
+        <div class="card-body">
+            <slot />
+        </div>
+        <footer v-if="showActions" class="card-footer">
+            <button
+                class="btn btn-primary"
+                :disabled="isLoading"
+                @click="handleUpdate"
+            >
+                Update
+            </button>
+        </footer>
+    </article>
+</template>
+```
+
+## Vue 3.4+ Features (REQUIRED)
+
+| Feature | Description | Example |
+|---------|-------------|---------|
+| `defineModel()` | Two-way binding macro | `const modelValue = defineModel<string>()` |
+| Generic components | Type-safe generics | `<script setup lang="ts" generic="T">` |
+| `v-bind` shorthand | Same-name binding | `:id` instead of `:id="id"` |
+| Improved hydration | Better SSR mismatches | Automatic |
+
+```vue
+<script setup lang="ts">
+// defineModel — Vue 3.4+ two-way binding
+const searchQuery = defineModel<string>('search', { default: '' });
+const isOpen      = defineModel<boolean>({ default: false });
+
+// Generic components — Vue 3.3+
+</script>
+
+<script setup lang="ts" generic="T extends { id: string }">
+import type { PropType } from 'vue';
+
+const props = defineProps<{
+    items    : T[];
+    selected : T | null;
+}>();
+
+const emit = defineEmits<{
+    select: [item: T];
+}>();
+</script>
+```
+
+## Composables Pattern
+
+```typescript
+// composables/useAsync.ts
+import { ref, type Ref } from 'vue';
+
+interface UseAsyncReturn<T> {
+    data      : Ref<T | null>;
+    error     : Ref<Error | null>;
+    isLoading : Ref<boolean>;
+    execute   : () => Promise<void>;
+}
+
+/**
+ * Composable for async operations with loading/error state.
+ *
+ * @param   asyncFn - Async function to execute
+ * @returns         - Reactive state and execute function
+ */
+export function useAsync<T>(asyncFn: () => Promise<T>): UseAsyncReturn<T> {
+    const data      = ref<T | null>(null) as Ref<T | null>;
+    const error     = ref<Error | null>(null);
+    const isLoading = ref(false);
+
+    async function execute(): Promise<void> {
+        isLoading.value = true;
+        error.value     = null;
+        try {
+            data.value = await asyncFn();
+        } catch (e) {
+            error.value = e instanceof Error ? e : new Error(String(e));
+        } finally {
+            isLoading.value = false;
+        }
+    }
+
+    return { data, error, isLoading, execute };
+}
+```
+
+```vue
+<script setup lang="ts">
+import { useAsync } from '@/composables/useAsync';
+import { fetchUsers } from '@/api/users';
+
+const { data: users, isLoading, error, execute: loadUsers } = useAsync(fetchUsers);
+
+onMounted(loadUsers);
+</script>
+```
+
+## Vue.js Deprecations — AVOID THESE
+
+| ❌ Legacy (Never Use) | ✅ Modern (Use This) |
+|-----------------------|----------------------|
+| Options API (`data()`, `methods`) | Composition API + `<script setup>` |
+| `this.$refs` | `ref()` + template ref |
+| `this.$emit` | `defineEmits()` |
+| `.native` modifier | Remove (events pass through) |
+| `v-on:keyup.enter` | `@keyup.enter` |
+| Mixins | Composables |
+| `Vue.prototype` | `app.config.globalProperties` or provide/inject |
+
+---
+
+# HTML5 — SEMANTIC & ACCESSIBLE
+
+## Semantic Elements (REQUIRED)
+
+```html
+<body>
+    <header>
+        <nav aria-label="Main navigation">
+            <!-- Navigation -->
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section aria-labelledby="dashboard-heading">
+            <h1 id="dashboard-heading">Dashboard</h1>
+
+            <article class="card">
+                <!-- Self-contained content -->
+            </article>
+        </section>
+
+        <aside aria-label="Related content">
+            <!-- Supplementary content -->
+        </aside>
+    </main>
+
+    <footer>
+        <!-- Footer content -->
+    </footer>
+</body>
+```
+
+## ARIA Patterns
+
+```html
+<!-- Loading states -->
+<div v-if="isLoading" role="status" aria-live="polite">
+    <span class="spinner-border" aria-hidden="true"></span>
+    <span class="visually-hidden">Loading...</span>
+</div>
+
+<!-- Dynamic regions -->
+<div aria-live="polite" aria-atomic="true">
+    {{ statusMessage }}
+</div>
+
+<!-- Icon buttons -->
+<button type="button" aria-label="Close dialog" @click="close">
+    <i class="bi-x-lg" aria-hidden="true"></i>
+</button>
+
+<!-- Form validation -->
+<input
+    id="email"
+    v-model="email"
+    type="email"
+    :aria-invalid="!!errors.email"
+    :aria-describedby="errors.email ? 'email-error' : undefined"
+>
+<span v-if="errors.email" id="email-error" role="alert">
+    {{ errors.email }}
+</span>
+```
+
+## HTML Attribute Order (Vue Components)
+
 1. `id`
 2. `class`
-3. `v-*` (Vue directives)
-4. `@` (Vue event handlers)
-5. Other attributes
+3. `v-if` / `v-show` / `v-for`
+4. `v-model`
+5. `:` (v-bind)
+6. `@` (v-on)
+7. Standard attributes
+8. ARIA attributes
 
 ```html
 <input
     id="searchInput"
     class="form-control"
-    v-model="filters.search"
+    v-model="searchQuery"
+    :disabled="isLoading"
     @input="handleSearch"
-    type="text"
+    type="search"
     placeholder="Search..."
-    aria-describedby="searchHelp"
+    aria-label="Search items"
+    aria-describedby="search-help"
 >
 ```
 
 ---
 
-## Accessibility (ARIA)
+# Modern Features Reference
 
-### Loading Indicators
+## CSS (2024)
 
-```html
-<div v-if="loading" role="status" aria-live="polite">
-    <span class="spinner-border" aria-hidden="true"></span>
-    <span class="visually-hidden">Loading data...</span>
-</div>
-```
+| Feature | Support | Use Case |
+|---------|---------|----------|
+| Native Nesting | ✅ All modern | Replace Sass nesting |
+| Container Queries | ✅ All modern | Component-responsive design |
+| `:has()` | ✅ All modern | Parent selection |
+| `@layer` | ✅ All modern | Specificity management |
+| `color-mix()` | ✅ All modern | Dynamic colors |
+| `@scope` | 🟡 Partial | Scoped styles (Chrome) |
+| Anchor Positioning | 🟡 Partial | Popover positioning |
 
-### Form Inputs
+## Vue.js 3.4+
 
-```html
-<div class="mb-3">
-    <label for="searchInput" class="form-label">Search</label>
-    <input
-        id="searchInput"
-        class="form-control"
-        v-model="filters.search"
-        type="text"
-        placeholder="Enter search term"
-        aria-describedby="searchHelp"
-    >
-    <small id="searchHelp" class="form-text">
-        Search by name, category, or description
-    </small>
-</div>
-```
+| Feature | Version | Description |
+|---------|---------|-------------|
+| `defineModel()` | 3.4+ | Simplified v-model |
+| Generic components | 3.3+ | Type-safe generics |
+| `v-bind` shorthand | 3.4+ | Same-name binding |
+| Suspense (stable) | 3.3+ | Async component loading |
+| Teleport | 3.0+ | Portal rendering |
 
-### Buttons with Icons
+## Bootstrap 5.3+
 
-```html
-<button
-    type="button"
-    class="btn btn-primary"
-    @click="refresh"
-    aria-label="Refresh data"
->
-    <i class="bi-arrow-clockwise" aria-hidden="true"></i>
-    Refresh
-</button>
-```
-
----
-
-## Vue.js 3 Best Practices
-
-### Component Structure
-
-```javascript
-const { createApp } = Vue;
-
-createApp({
-    data() {
-        return {
-            // Group related state
-            filters: {
-                search   : '',
-                category : 'all',
-                sortBy   : 'date'
-            },
-
-            // UI state
-            loading     : false,
-            darkMode    : localStorage.getItem('darkMode') === 'true',
-            showFilters : true,
-
-            // Data
-            items      : [],
-            totalItems : 0
-        };
-    },
-
-    computed: {
-        filteredItems() {
-            return this.items.filter(item => {
-                // Filter logic with clear comments
-                const matchesSearch = item.name.toLowerCase()
-                    .includes(this.filters.search.toLowerCase());
-
-                const matchesCategory = this.filters.category === 'all'
-                    || item.category === this.filters.category;
-
-                return matchesSearch && matchesCategory;
-            });
-        },
-
-        sortedItems() {
-            // Sort filtered items based on selected criteria
-            return [...this.filteredItems].sort((a, b) => {
-                switch (this.filters.sortBy) {
-                    case 'date':
-                        return new Date(b.date) - new Date(a.date);
-                    case 'name':
-                        return a.name.localeCompare(b.name);
-                    default:
-                        return 0;
-                }
-            });
-        }
-    },
-
-    methods: {
-        /**
-         * Load data from API endpoint
-         * Handles loading state and error management
-         */
-        async loadData() {
-            this.loading = true;
-            try {
-                const response  = await axios.get('/api/data');
-                this.items      = response.data.items;
-                this.totalItems = response.data.total;
-            } catch (error) {
-                console.error('Error loading data:', error);
-                this.showError('Failed to load data. Please try again.');
-            } finally {
-                this.loading = false;
-            }
-        },
-
-        /**
-         * Toggle dark mode and persist preference
-         */
-        toggleDarkMode() {
-            this.darkMode = !this.darkMode;
-            localStorage.setItem('darkMode', this.darkMode);
-        },
-
-        /**
-         * Display error message to user
-         * @param {string} message - Error message to display
-         */
-        showError(message) {
-            // Implementation for error display
-            alert(message);
-        }
-    },
-
-    mounted() {
-        // Initialize component when mounted
-        this.loadData();
-
-        // Set up any event listeners or subscriptions
-        window.addEventListener('resize', this.handleResize);
-    },
-
-    beforeUnmount() {
-        // Clean up event listeners
-        window.removeEventListener('resize', this.handleResize);
-    }
-}).mount('#app');
-```
-
-### Vue.js Code Organization
-
-- **Group related data properties** logically (filters, UI state, data)
-- **Use computed properties** for derived state instead of methods when possible
-- **Add JSDoc comments** to methods explaining their purpose and parameters
-- **Handle async operations** with proper error handling and loading states
-- **Clean up resources** in lifecycle hooks (event listeners, timers, etc.)
-- **Use meaningful variable names** that clearly indicate purpose
-- **Align object properties** with consistent spacing
-
----
-
-## Bootstrap 5.3+ Integration
-
-### Dark Mode Toggle
-
-```html
-<!-- Dark mode toggle with Bootstrap -->
-<div :data-bs-theme="darkMode ? 'dark' : 'light'">
-    <!-- Bootstrap components automatically adapt -->
-    <button class="btn btn-primary" @click="toggleDarkMode">
-        <i :class="darkMode ? 'bi-sun' : 'bi-moon'"></i>
-        Toggle Theme
-    </button>
-</div>
-```
-
-### Best Practices
-
-- Leverage Bootstrap's CSS custom properties for theming
-- Use utility classes for rapid prototyping
-- Customize via CSS variables rather than Sass when possible
-- Implement dark mode using `data-bs-theme` attribute
-
----
-
-## Code Quality Standards
-
-### HTML
-
-- Use semantic HTML5 elements appropriately
-- Include proper ARIA attributes for accessibility
-- Keep markup clean and properly indented (2 or 4 spaces consistently)
-- Use Vue directives appropriately (`v-if`, `v-for`, `v-bind`, `v-model`, `v-on`/`@`)
-- Add `:key` bindings for `v-for` loops
-
-### CSS
-
-- **Use CSS custom properties** for maintainable theming
-- **Implement responsive design** with mobile-first approach
-- **Leverage modern CSS features** (nesting, `:is()`, `:where()`, container queries, `@layer`)
-- **Avoid `!important`** unless absolutely necessary (document why if used)
-- **Use meaningful class names** (BEM or similar methodology)
-- **Always use nesting** for related selectors and modifiers
-- **Align properties** for improved readability
-
-### JavaScript/Vue
-
-- Use modern ES6+ syntax (arrow functions, destructuring, async/await, template literals)
-- Handle errors gracefully with try/catch blocks
-- Implement loading states for async operations
-- Use Vue reactivity system efficiently (avoid unnecessary re-renders)
-- Add JSDoc comments to explain complex logic and method purposes
-- Use `const` and `let` appropriately (prefer `const` when possible)
-- Align object properties with consistent spacing
-
----
-
-## Important Best Practices Summary
-
-| # | Principle | Description |
-|---|-----------|-------------|
-| 1 | **Semantic HTML** | Use appropriate elements (`<nav>`, `<main>`, `<article>`, etc.) |
-| 2 | **Accessibility** | Include ARIA labels, proper focus management, keyboard navigation |
-| 3 | **CSS Nesting** | Use modern CSS nesting for organization and readability |
-| 4 | **Custom Properties** | Use CSS variables for maintainable theming |
-| 5 | **Mobile-first** | Design for mobile, enhance for larger screens |
-| 6 | **Performance** | Minimize re-renders, use efficient selectors |
-| 7 | **Dark Mode** | Support `data-bs-theme` for Bootstrap integration |
-| 8 | **Vue Best Practices** | Computed properties, lifecycle cleanup, error handling |
-| 9 | **Property Alignment** | Align CSS properties and JS object values for readability |
-| 10 | **Documentation** | Comment complex logic, use JSDoc for methods |
+| Feature | Description |
+|---------|-------------|
+| `data-bs-theme` | Color mode switching |
+| CSS Variables | Runtime customization |
+| Color modes | Auto light/dark |
+| `color-mode()` mixin | Sass color mode helpers |

@@ -95,6 +95,7 @@ A lightweight projection for lists: `user_id`, `username`, `display_name`, `avat
 3. **Startup event**      : Log "SocialPulse API started" and the number of mock users loaded.
 4. **Lifespan or events** : Use modern FastAPI lifespan context manager pattern.
 5. **Entry point**        : Include `if __name__ == "__main__":` block that runs uvicorn on `0.0.0.0:8000`.
+   - Use `"tests.python:app"` as the app import string (full module path for running from project root with `python -m tests.python`).
 
 ---
 

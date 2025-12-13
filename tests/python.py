@@ -665,7 +665,7 @@ async def search_users(
 
 if __name__ == "__main__":
     uvicorn.run(
-        "python:app",
+        "tests.python:app",
         host   = "0.0.0.0",
         port   = 8000,
         reload = True
