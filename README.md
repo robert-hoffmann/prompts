@@ -26,7 +26,7 @@ Instructions are automatically applied based on file type when you open matching
 | File | Applies To | Purpose |
 |------|------------|---------|
 | [`vuejs.instructions.md`](.github/instructions/vuejs.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
-| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `*.js`, `*.jsx`, `*.ts`, `*.tsx` | Modern JS/TS ES2020+ with comprehensive JSDoc |
+| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `*.js`, `*.jsx`, `*.ts`, `*.tsx`, `*.html`, `*.vue` | Modern JS/TS ES2020+ with comprehensive JSDoc |
 | [`python.instructions.md`](.github/instructions/python.instructions.md) | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
 
 ### 💬 Prompts (On-Demand Actions)
@@ -38,6 +38,28 @@ Prompts are invoked manually via Copilot Chat using the `/` command or by select
 | [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) | Ask | Generate Mermaid diagrams with clickable elements linking to source |
 | [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) | Ask | Document Python files with extensive inline comments (preview) |
 | [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) | Edit | Document Python files with inline editing (modifies file directly) |
+| [`test.python.prompt.md`](.github/prompts/test.python.prompt.md) | Agent | Generate a Python FastAPI service to verify instruction adherence |
+| [`test.vue.prompt.md`](.github/prompts/test.vue.prompt.md) | Agent | Generate a Vue.js SPA to verify instruction adherence |
+
+### 🤖 Agents (Custom AI Personas)
+
+Agents are specialized AI personas with specific expertise and tool access.
+
+| File | Purpose |
+|------|---------|
+| [`teacher.agent.md`](.github/agents/teacher.agent.md) | Explains code with analogies and cross-language comparisons (JS, C#, Python, PHP) |
+
+### 🧪 Test Files
+
+The [`tests/`](./tests/) folder contains generated code used to verify instruction adherence:
+
+| File | Description |
+|------|-------------|
+| [`python.py`](./tests/python.py) | FastAPI micro-service generated via `test.python.prompt.md` |
+| [`vuejs.html`](./tests/vuejs.html) | Vue.js SPA that consumes the Python API |
+| [`requirements.txt`](./requirements.txt) | Dependencies for running test files (`pip install -r ./requirements.txt`) |
+
+These files are **one-shotted** — generated in a single prompt to test how well the instructions are followed.
 
 ---
 
@@ -156,13 +178,46 @@ Both [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) and [`doc-edit.pro
 - **Import documentation** - Explains why each import exists
 - **Aligned formatting** - Colons and values lined up
 
-### 🎓 Code Explanation
+### 🤖 Teacher Agent
 
-The [`explain-code.prompt.md`](.github/prompts/explain-code.prompt.md) provides:
+The [`teacher.agent.md`](.github/agents/teacher.agent.md) is a custom agent that:
 
-- **Multi-language comparisons** - JavaScript, C#, and PHP equivalents
-- **Beginner-friendly** - Simple analogies before technical terms
-- **Structured format** - 🔍 What, 🧱 How, 🔄 Similar to, ✅ Good, ⚠️ Watch out, 💡 Tips
+- **Explains code** - Clear, beginner-friendly explanations
+- **Cross-language analogies** - Compares to JavaScript, C#, Python, and PHP
+- **Structured output** - What it does, how it works, good practices, pitfalls
+- **Uses Context7 MCP** - Fetches up-to-date documentation when needed
+
+Perfect for onboarding new team members or understanding unfamiliar codebases.
+
+---
+
+## 🔌 MCP Integration (Model Context Protocol)
+
+This repo includes a workspace-level MCP configuration in [`.vscode/mcp.json`](.vscode/mcp.json):
+
+```json
+{
+    "servers": {
+        "context7": {
+            "type": "http",
+            "url": "https://mcp.context7.com/mcp"
+        }
+    }
+}
+```
+
+### Why HTTP-based MCP?
+
+- **No local installation** - Works out of the box, no `npx` or Docker required
+- **Portable** - Copy `.vscode/mcp.json` to any project
+- **Shareable** - Safe to commit (no API keys in the URL)
+- **Always up-to-date** - Server-side updates automatically
+
+### What is Context7?
+
+[Context7](https://context7.com/) provides **up-to-date documentation** for libraries directly in your AI context. Instead of getting outdated training data, Copilot can fetch current docs for any library.
+
+The teacher agent and prompts use this to provide accurate, version-specific guidance.
 
 ---
 
@@ -178,10 +233,13 @@ git clone https://github.com/robert-hoffmann/prompts.git
 
 ```
 your-project/
+├── .vscode/
+│   ├── mcp.json                   # MCP server configuration (Context7)
+│   └── settings.json              # Recommended Pylance/Python settings
 ├── .github/
 │   ├── copilot-instructions.md    # Global instructions (optional)
-│   ├── agents/                    # Custom Agents
-│   │   ├── teacher.agent.md
+│   ├── agents/                    # Custom AI personas
+│   │   └── teacher.agent.md       # Code explanation agent
 │   ├── instructions/              # Auto-applied rules
 │   │   ├── vuejs.instructions.md
 │   │   ├── python.instructions.md
@@ -190,12 +248,31 @@ your-project/
 │       ├── diagram-generate.prompt.md
 │       ├── doc-ask.prompt.md
 │       ├── doc-edit.prompt.md
+│       ├── test.python.prompt.md  # Generates test API
+│       └── test.vue.prompt.md     # Generates test SPA
+├── tests/                         # Generated test files
+│   ├── python.py                  # FastAPI service
+│   └── vuejs.html                 # Vue.js SPA
+└── requirements.txt               # Test dependencies
 ```
 
 ### 3. Start coding! 🎉
 
 - **Instructions** - Automatically applied when you open matching file types
 - **Prompts**      - Invoke via Copilot Chat with `@workspace /prompt-name` or select from the prompt picker
+- **Agents**       - Invoke via `@agent-name` in Copilot Chat (e.g., `@teacher explain this code`)
+
+### 4. (Optional) Run the test suite
+
+```bash
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run the FastAPI service
+python -m tests.python
+
+# Open tests/vuejs.html in your browser to test the Vue.js SPA
+```
 
 ---
 
@@ -270,9 +347,11 @@ These guides explain the *why* behind the formatting and documentation standards
 
 ---
 
-## 🎁 Bonus: VS Code Settings for Python Type Safety
+## 🎁 Bonus: VS Code Settings
 
-Want **maximum type safety**? Add this to your `.vscode/settings.json`:
+### Python Type Safety (Pylance)
+
+Want **maximum type safety**? Check out the [`.vscode/settings.json`](.vscode/settings.json) in this repo, or add this to your own:
 
 ```jsonc
 {
