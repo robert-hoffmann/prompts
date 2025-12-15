@@ -1,140 +1,139 @@
-# 🚀 Copilot Prompt Collection
+# Copilot Prompt Collection
 
-> **Supercharge your GitHub Copilot** with battle-tested prompts and instructions for cleaner, better-documented code.
+> The actual prompts, settings, and guidelines I use daily for maintaining a mission-critical production application in the aerospace industry.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## ✨ What's This?
+## What's This?
 
-A curated collection of **GitHub Copilot prompt files** and **instruction files** designed to:
+This isn't a theoretical "best practices" collection, it's the exact setup i'm running in production right now.
 
-- 📝 Generate **beautifully documented** code with proper comments
-- 🎯 Enforce **consistent coding standards** across your projects
-- ⚡ Boost productivity with **opinionated, modern best practices**
-- 🧠 Help Copilot understand your **project conventions**
+These prompts and instructions make Copilot generate code that's:
+
+- **Actually documented** — with inline comments that explain the *why*, not just the *what*
+- **Consistently formatted** — aligned properties, organized sections, predictable structure
+- **Type-safe** — full type hints in Python, strict TypeScript, proper JSDoc
+- **Easy to review** — clean, readable output that makes code review straightforward
+
+A note on workflow: These prompts work best in `Ask` and `Edit` modes where you review suggestions before applying them. Agent mode is useful for scaffolding or exploratory tasks, but remember, AI makes mistakes. Always peer-review generated code regardless of the mode used.
 
 ---
 
-## 📁 What's Included
+## What's Included
 
-### 🎓 Instructions (Auto-Applied Rules)
+### Instructions (Auto-Applied Rules)
 
-Instructions are automatically applied based on file type when you open matching files.
+These get applied automatically based on file type when you open matching files.
 
 | File | Applies To | Purpose |
 |------|------------|---------|
-| [`vuejs.instructions.md`](.github/instructions/vuejs.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ standards |
-| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `*.js`, `*.jsx`, `*.ts`, `*.tsx`, `*.html`, `*.vue` | Modern JS/TS ES2020+ with comprehensive JSDoc |
-| [`python.instructions.md`](.github/instructions/python.instructions.md) | `.py`, `.ipynb` | Modern Python 3.10+ with full type hints (Windows-first) |
+| [`python.instructions.md`](.github/instructions/python.instructions.md) | `.py`, `.ipynb` | Python 3.10+ with full type hints (Windows-first) |
+| [`ts.instructions.md`](.github/instructions/ts.instructions.md) | `*.js`, `*.jsx`, `*.ts`, `*.tsx`, `*.html`, `*.vue` | ES2020+ with comprehensive JSDoc |
+| [`vuejs.instructions.md`](.github/instructions/vuejs.instructions.md) | `.html`, `.css`, `.vue` | Vue 3.5+ / CSS3 nesting / Bootstrap 5.3+ |
 
-### 💬 Prompts (On-Demand Actions)
+### Prompts (On-Demand)
 
-Prompts are invoked manually via Copilot Chat using the `/` command or by selecting the prompt file.
+Invoke these manually via Copilot Chat.
 
 | File | Mode | What It Does |
 |------|------|--------------|
-| [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) | Ask | Generate Mermaid diagrams with clickable elements linking to source |
-| [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) | Ask | Document Python files with extensive inline comments (preview) |
-| [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) | Edit | Document Python files with inline editing (modifies file directly) |
-| [`test.python.prompt.md`](.github/prompts/test.python.prompt.md) | Agent | Generate a Python FastAPI service to verify instruction adherence |
-| [`test.vue.prompt.md`](.github/prompts/test.vue.prompt.md) | Agent | Generate a Vue.js SPA to verify instruction adherence |
+| [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) | Ask | Generate Mermaid diagrams with clickable links to source |
+| [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) | Ask | Document files with extensive inline comments |
+| [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) | Edit | Same, but modifies the file directly |
+| [`test.python.prompt.md`](.github/prompts/test.python.prompt.md) | Agent | Generate a test FastAPI service |
+| [`test.vue.prompt.md`](.github/prompts/test.vue.prompt.md) | Agent | Generate a test Vue.js SPA |
 
-### 🤖 Agents (Custom AI Personas)
-
-Agents are specialized AI personas with specific expertise and tool access.
+### Agents (Custom AI Personas)
 
 | File | Purpose |
 |------|---------|
-| [`teacher.agent.md`](.github/agents/teacher.agent.md) | Explains code with analogies and cross-language comparisons (JS, C#, Python, PHP) |
+| [`teacher.agent.md`](.github/agents/teacher.agent.md) | Explains code with analogies and cross-language comparisons |
 
-### 🧪 Test Files
+### Test Files
 
-The [`tests/`](./tests/) folder contains generated code used to verify instruction adherence:
+The [`tests/`](./tests/) folder contains generated code used to verify the instructions actually work:
 
 | File | Description |
 |------|-------------|
 | [`python.py`](./tests/python.py) | FastAPI micro-service generated via `test.python.prompt.md` |
 | [`vuejs.html`](./tests/vuejs.html) | Vue.js SPA that consumes the Python API |
-| [`requirements.txt`](./requirements.txt) | Dependencies for running test files (`pip install -r ./requirements.txt`) |
 
-These files are **one-shotted** — generated in a single prompt to test how well the instructions are followed.
-
----
-
-## 🔥 Key Features
-
-### Common Principles Across All Languages
-
-All instruction files share these core philosophies:
-
-- ✅ **KISS, DRY, YAGNI, Single Responsibility** - Clean code practices
-- ✅ **Standard library first** - Third-party packages used sparingly
-- ✅ **Composition over inheritance** - Flexible, maintainable code
-- ✅ **Comprehensive error handling** - Custom exceptions and error classes
-- ✅ **Aligned formatting** - Visual clarity with consistent spacing
+These files are **one-shotted**—generated in a single prompt to test how well the instructions are followed.
 
 ---
 
-### For Python Devs 🐍
+## Core Principles
+
+All instruction files share these foundations:
+
+- **KISS, DRY, YAGNI, Single Responsibility** — the classics, enforced
+- **Standard library first** — third-party packages only when they genuinely help
+- **Composition over inheritance** — flexible, testable code
+- **Comprehensive error handling** — custom exceptions where they make sense
+- **Aligned formatting** — visual consistency that makes code scannable
+
+---
+
+## Language-Specific Details
+
+### Python
 
 **Target:** Windows Server 2022 | Python 3.10+
 
 ```python
-# ✅ Modern type hints with pipe syntax
+# Modern type hints with pipe syntax
 def process_data(
         data   : list[str],
         config : dict[str, Any] | None = None
     ) -> tuple[bool, str]:
 ```
 
-| Feature | Description |
-|---------|-------------|
-| **100% Pylance compliant** | Standard mode type checking, zero warnings |
-| **Modern union syntax** | `str \| None` instead of `Optional[str]` |
-| **Built-in generics** | `list[str]` instead of `List[str]` |
-| **`pathlib` everywhere** | Modern file system operations |
-| **Aligned properties** | Visual clarity at a glance |
+| What | Why |
+|------|-----|
+| **Pylance standard mode** | Zero warnings, full type checking |
+| **`str \| None`** | Modern union syntax, not `Optional[str]` |
+| **`list[str]`** | Built-in generics, not `List[str]` |
+| **`pathlib` everywhere** | Modern file system ops |
 | **Dataclasses & Pydantic** | Preferred over plain classes |
 
-**Key PEPs enforced:** 585 (built-in generics), 604 (union types), 563 (postponed annotations), 634-636 (pattern matching), 618 (`zip(strict=True)`)
+**PEPs enforced:** 585 (built-in generics), 604 (union types), 563 (postponed annotations), 634-636 (pattern matching), 618 (`zip(strict=True)`)
 
 ---
 
-### For JavaScript/TypeScript Devs 💛
+### JavaScript / TypeScript
 
 **Target:** ES2020+ | TypeScript Strict Mode
 
 ```javascript
 /**
- * Extracts station and substation information from an address string.
+ * Extracts station and substation info from an address string.
  *
- * @param {string} address                                            - The full address string to parse
+ * @param {string} address                                            - The full address to parse
  * @returns {{station: string, substation: string, location: string}} - Parsed components
- * @throws {Error}                                                    - If the address format is invalid
+ * @throws {Error}                                                    - If format is invalid
  */
 function extractStationSubstation(address) {
-    // Implementation here
+    // ...
 }
 ```
 
-| Feature | Description |
-|---------|-------------|
-| **Comprehensive JSDoc** | Full type safety without TypeScript |
-| **Strict TypeScript** | `strictNullChecks`, `noImplicitAny` enabled |
-| **Modern syntax** | Optional chaining, nullish coalescing, destructuring |
+| What | Why |
+|------|-----|
+| **Comprehensive JSDoc** | Type safety without TypeScript if needed |
+| **Strict TypeScript** | `strictNullChecks`, `noImplicitAny` |
 | **`unknown` over `any`** | Safer type handling |
-| **Multiline formatting** | Clear parameter documentation |
+| **Modern syntax** | Optional chaining, nullish coalescing |
 
 ---
 
-### For Web Devs 🌐
+### Web (Vue / CSS)
 
 **Target:** Vue 3.5+ | Bootstrap 5.3+ | CSS3
 
 ```css
-/* ✅ Modern CSS Nesting */
+/* Modern CSS Nesting */
 .card {
     padding: 1rem;
 
@@ -148,50 +147,47 @@ function extractStationSubstation(address) {
 }
 ```
 
-| Feature | Description |
-|---------|-------------|
-| **Native CSS nesting** | Modern `&` syntax for pseudo-classes |
+| What | Why |
+|------|-----|
+| **Native CSS nesting** | No preprocessor needed for basic nesting |
 | **CSS custom properties** | `var(--primary-color)` throughout |
 | **Vue Composition API** | `<script setup>` with reactive patterns |
-| **Section organization** | Clear `/* ========= */` dividers |
-| **Semantic HTML5** | ARIA attributes, modern APIs |
+| **Semantic HTML5** | ARIA attributes, accessibility |
 
 ---
 
-## 🛠️ Prompt Highlights
+## About the Prompts
 
-### 📊 Diagram Generation
+### Diagram Generation
 
-The [`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) creates comprehensive Mermaid diagrams:
+[`diagram-generate.prompt.md`](.github/prompts/diagram-generate.prompt.md) creates Mermaid diagrams that:
 
-- **Auto-detects diagram type** - Flowchart, Class, Sequence, State, ER diagrams
-- **Clickable elements** - Links directly to source code lines in VS Code
-- **Dual-theme colors** - Works in both light and dark modes
-- **Proper syntax handling** - Escapes special characters, wraps labels correctly
+- Auto-detect the right diagram type (flowchart, class, sequence, etc.)
+- Include clickable elements linking to source code
+- Work in both light and dark themes
+- Handle special characters properly
 
-### 📖 Documentation Prompts
+### Documentation Prompts
 
-Both [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) and [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md) enforce:
+Both [`doc-ask.prompt.md`](.github/prompts/doc-ask.prompt.md) and [`doc-edit.prompt.md`](.github/prompts/doc-edit.prompt.md):
 
-- **Code preservation** - Never removes existing functionality
-- **Section headers** - `# ========= STEP 1: Description =========`
-- **Import documentation** - Explains why each import exists
-- **Aligned formatting** - Colons and values lined up
+- Preserve existing code (never remove functionality)
+- Add section headers for organization
+- Document imports (why each one exists)
+- Align formatting for readability
 
-### 🤖 Teacher Agent
+### Teacher Agent
 
-The [`teacher.agent.md`](.github/agents/teacher.agent.md) is a custom agent that:
+[`teacher.agent.md`](.github/agents/teacher.agent.md) explains code with:
 
-- **Explains code** - Clear, beginner-friendly explanations
-- **Cross-language analogies** - Compares to JavaScript, C#, Python, and PHP
-- **Structured output** - What it does, how it works, good practices, pitfalls
-- **Uses Context7 MCP** - Fetches up-to-date documentation when needed
-
-Perfect for onboarding new team members or understanding unfamiliar codebases.
+- Clear, beginner-friendly language
+- Cross-language analogies (JS, C#, Python, PHP)
+- Structured output (what it does, how it works, pitfalls)
+- Up-to-date docs via Context7 MCP
 
 ---
 
-## 🔌 MCP Integration (Model Context Protocol)
+## MCP Integration
 
 This repo includes a workspace-level MCP configuration in [`.vscode/mcp.json`](.vscode/mcp.json):
 
@@ -206,18 +202,9 @@ This repo includes a workspace-level MCP configuration in [`.vscode/mcp.json`](.
 }
 ```
 
-### Why HTTP-based MCP?
+**Why HTTP-based?** No local installation, works out of the box, safe to commit (no API keys).
 
-- **No local installation** - Works out of the box, no `npx` or Docker required
-- **Portable** - Copy `.vscode/mcp.json` to any project
-- **Shareable** - Safe to commit (no API keys in the URL)
-- **Always up-to-date** - Server-side updates automatically
-
-### What is Context7?
-
-[Context7](https://context7.com/) provides **up-to-date documentation** for libraries directly in your AI context. Instead of getting outdated training data, Copilot can fetch current docs for any library.
-
-The teacher agent and prompts use this to provide accurate, version-specific guidance.
+[Context7](https://context7.com/) provides up-to-date library documentation directly to your AI context—so Copilot references current docs instead of outdated training data.
 
 ---
 
