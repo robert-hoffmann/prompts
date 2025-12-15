@@ -1,5 +1,5 @@
 ---
-applyTo: "*.html,*.css,*.vue"
+applyTo: "**/*.html, **/*.css, **/*.vue"
 ---
 
 # Web Development Standards (Vue.js 3 + CSS3 + Bootstrap 5.3+)
@@ -65,13 +65,13 @@ applyTo: "*.html,*.css,*.vue"
 .card {
     padding: 1rem;
 
-    @container card (min-width: 400px) {
+    @container card (min-width : 400px) {
         display               : grid;
         grid-template-columns : 1fr 2fr;
         gap                   : 1rem;
     }
 
-    @container card (min-width: 600px) {
+    @container card (min-width : 600px) {
         grid-template-columns : 1fr 3fr;
     }
 }
@@ -181,8 +181,8 @@ Order properties logically within each rule:
 ```css
 /* Custom dark mode overrides */
 [data-bs-theme="dark"] {
-    --custom-bg     : #1a1a2e;
-    --custom-text   : #eaeaea;
+    --custom-bg   : #1a1a2e;
+    --custom-text : #eaeaea;
 
     .custom-component {
         background : var(--custom-bg);
@@ -336,7 +336,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    select: [item: T];
+    select : [item: T];
 }>();
 </script>
 ```
@@ -383,7 +383,7 @@ export function useAsync<T>(asyncFn: () => Promise<T>): UseAsyncReturn<T> {
 
 ```vue
 <script setup lang="ts">
-import { useAsync } from '@/composables/useAsync';
+import { useAsync }   from '@/composables/useAsync';
 import { fetchUsers } from '@/api/users';
 
 const { data: users, isLoading, error, execute: loadUsers } = useAsync(fetchUsers);

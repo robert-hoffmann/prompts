@@ -1,5 +1,5 @@
 ---
-applyTo: "*.js, *.jsx, *.ts, *.tsx"
+applyTo: "**/*.js, **/*.jsx, **/*.ts, **/*.tsx, **/*.html, **/*.vue"
 ---
 
 # JavaScript/TypeScript Expert Guide
@@ -36,17 +36,17 @@ You are a JavaScript/TypeScript expert specializing in clean, performant, and id
 ```typescript
 // Use `interface` for public API definitions, `type` for unions and intersections
 interface User {
-    id          : string;
-    name        : string;
-    email       : string;
-    role        : 'admin' | 'user';
+    id                 : string;
+    name               : string;
+    email              : string;
+    role               : 'admin' | 'user';
     readonly createdAt : Date;
 }
 
 // Discriminated unions for complex state management
 type Result<T> =
-    | { success: true ; data: T }
-    | { success: false; error: string };
+    | { success : true ; data  : T }
+    | { success : false; error : string };
 
 // Utility types: Partial<T>, Required<T>, Pick<T, K>, Omit<T, K>, Record<K, T>
 type PartialUser = Partial<User>;
@@ -103,19 +103,19 @@ Use multiline format with aligned parameters:
 ```typescript
 // TypeScript function
 function complexFunction(
-    param1   : string,
-    param2   : number,
-    param3   : Record<string, unknown> | null = null
+    param1 : string,
+    param2 : number,
+    param3 : Record<string, unknown> | null = null
 ): [string, string, string] {
     // implementation
 }
 
 // Constructor with defaults
 constructor(
-    logFilePattern      : string,
-    databasePath        : string,
-    archiveInterval     : number         = 600000,  // 10 minutes
-    maxBatchSize        : number         = 10000
+    logFilePattern  : string,
+    databasePath    : string,
+    archiveInterval : number = 600000,  // 10 minutes
+    maxBatchSize    : number = 10000
 ) {
     // implementation
 }
@@ -124,9 +124,9 @@ constructor(
 ```javascript
 // JavaScript with JSDoc
 /**
- * @param {string} param1         - First parameter
- * @param {number} param2         - Second parameter
- * @returns {[string, string]}    - Result tuple
+ * @param {string} param1      - First parameter
+ * @param {number} param2      - Second parameter
+ * @returns {[string, string]} - Result tuple
  */
 function complexFunction(param1, param2) {
     // implementation
@@ -177,9 +177,9 @@ import type { UserConfig } from './types';  // User configuration interface
 // ============================================================================
 // Project Modules
 // ============================================================================
-import { logger }    from './utils/logger';   // Application logger
-import { config }    from './config';         // App configuration
-import { validate }  from './utils/validate'; // Input validation helpers
+import { logger }   from './utils/logger';   // Application logger
+import { config }   from './config';         // App configuration
+import { validate } from './utils/validate'; // Input validation helpers
 ```
 
 **Rules:**

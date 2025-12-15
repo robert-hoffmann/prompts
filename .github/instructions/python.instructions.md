@@ -1,5 +1,5 @@
 ---
-applyTo: "*.py,*.ipynb"
+applyTo: "**/*.py, **/*.ipynb"
 ---
 
 # Python-Specific Standards
@@ -18,9 +18,9 @@ applyTo: "*.py,*.ipynb"
 ## Python-Specific Approach
 
 1. **100% Pylance compliance** in `standard` mode — zero warnings
-2. **Modern syntax**           : pipe unions (`|`), match statements, walrus operator (`:=`)
-3. **Generators**              : for memory efficiency on large datasets
-4. **Zen of Python**           : as guiding philosophy
+2. **Modern syntax** : pipe unions (`|`), match statements, walrus operator (`:=`)
+3. **Generators**    : for memory efficiency on large datasets
+4. **Zen of Python** : as guiding philosophy
 
 ---
 
@@ -74,8 +74,8 @@ Is the data from external sources (API, file, user input)?
 ```python
 # Dataclasses for lightweight internal data containers
 from dataclasses import (
-    dataclass,  # Decorator to auto-generate __init__, __repr__, etc.
-    field       # Customize field behavior (default_factory, metadata)
+    dataclass, # Decorator to auto-generate __init__, __repr__, etc.
+    field      # Customize field behavior (default_factory, metadata)
 )
 
 @dataclass(slots=True, frozen=True, kw_only=True)
@@ -272,8 +272,8 @@ from pathlib import Path # Filesystem path handling
 
 # dataclasses — Decorator for auto-generating special methods
 from dataclasses import (
-    dataclass,  # Auto-generate __init__, __repr__, etc.
-    field       # Customize field behavior (default_factory, metadata)
+    dataclass, # Auto-generate __init__, __repr__, etc.
+    field      # Customize field behavior (default_factory, metadata)
 )
 
 # ============================================================================
@@ -282,11 +282,11 @@ from dataclasses import (
 
 # pydantic — Data validation using Python type hints
 from pydantic import (
-    BaseModel,        # Base class for validated data models
-    ConfigDict,       # Model configuration (strict, frozen, etc.)
-    Field,            # Field constraints and metadata (gt, le, min_length)
-    field_validator,  # Decorator for field-level validation (v2 API)
-    model_validator   # Decorator for cross-field validation (v2 API)
+    BaseModel,       # Base class for validated data models
+    ConfigDict,      # Model configuration (strict, frozen, etc.)
+    Field,           # Field constraints and metadata (gt, le, min_length)
+    field_validator, # Decorator for field-level validation (v2 API)
+    model_validator  # Decorator for cross-field validation (v2 API)
 )
 
 # ============================================================================
@@ -300,18 +300,18 @@ from myproject.utils import helper_function  # Project utility helpers
 
 # typing — Type hints for static analysis
 from typing import (
-    Any,       # Any type (use sparingly)
-    Protocol,  # Structural subtyping (duck typing)
-    Self,      # Return type for self (3.11+)
-    TypeVar    # Generic type variable
+    Any,      # Any type (use sparingly)
+    Protocol, # Structural subtyping (duck typing)
+    Self,     # Return type for self (3.11+)
+    TypeVar   # Generic type variable
 )
 
 # collections.abc — Abstract base classes for containers
 from collections.abc import (
-    Callable,   # Callable protocol
-    Iterator,   # Iterator protocol
-    Mapping,    # Mapping protocol (dict-like)
-    Sequence    # Sequence protocol (list-like)
+    Callable, # Callable protocol
+    Iterator, # Iterator protocol
+    Mapping,  # Mapping protocol (dict-like)
+    Sequence  # Sequence protocol (list-like)
 )
 ```
 
