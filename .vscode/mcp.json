@@ -1,12 +1,8 @@
 {
 	"servers": {
 		"context7": {
-			"type": "stdio",
-			"command": "npx",
-			"args": [
-				"-y",
-				"@upstash/context7-mcp@latest"
-			],
+			"type": "http",
+			"url": "https://mcp.context7.com/mcp",
 		}
 	},
 	"inputs": []
