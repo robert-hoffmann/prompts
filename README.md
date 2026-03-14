@@ -1,5 +1,7 @@
 # Copilot Prompt Collection
 
+**DEPRECATED** in favor of : https://github.com/robert-hoffmann/uncle-bob
+
 > The actual prompts, settings, and guidelines I use daily for maintaining a mission-critical production application in the aerospace industry.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
